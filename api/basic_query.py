@@ -85,23 +85,15 @@ class BasicQuery:
 
     self.json = json.dumps(self.req)
     
-  def request(self, method:str="POST"):
+  def request(self):
     if len(self.req) == 0:
       self.dumps()
-    if method == "POST":
-      response = requests.post(self.query_path,
-                              data=self.json,
-                              headers={
-                               'Authorization': 'Bearer '+ self.token,
-                                'Content-Type': 'application/json'
-                              })
-    if method == "GET":
-      response = requests.post(self.query_path,
-                              data=self.json,
-                              headers={
-                                'Authorization': 'Bearer '+ self.token,
-                                'Content-Type': 'application/json'
-                              })
+    response = requests.post(self.query_path,
+                            data=self.json,
+                            headers={
+                             'Authorization': 'Bearer '+ self.token,
+                              'Content-Type': 'application/json'
+                            })
 
     if response.status_code != codes['ok']:
       raise RequestException(response)

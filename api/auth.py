@@ -3,32 +3,28 @@ from genome_api.elements import ResponseException
 
 import time
 from requests import post
-from requests.auth import HTTPBasicAuth
 from requests.status_codes import codes
+import base64
 
 class Authorize:
   
   def __init__(self, url: str, consumer_key: str, consumer_secret: str):
-    self.access_token = None
-    self.scopes = None
-    self._expiration_timestamp = None
+    self._token = None
+    self._scopes = None
     self._url = url
-    self._consumer_key = consumer_key
-    self._consumer_secret = consumer_secret
-  
-  def request_token(self):
-    pre_request_timestamp = time.time() 
-    response = post(self._url, auth=HTTPBasicAuth(self._consumer_key, self._consumer_secret), 
-                    data={'grant_type': 'client_credentials'})
+    self.get_token(consumer_key, consumer_secret)
+
+  def get_token(self, consumer_key:str, consumer_secret:str):
+    keySecret = (consumer_key + ":" + consumer_secret).encode('utf-8')
+    consumerKeySecretB64 = base64.b64encode(keySecret).decode('utf-8')
+    response = post("https://apistore.dsparkanalytics.com.au/token",
+                                  data={'grant_type': 'client_credentials'},
+                                  headers={'Authorization': 'Basic ' + consumerKeySecretB64})
     if response.status_code != codes["ok"]:
       raise ResponseException(response)
-    payload = response.json()
-    self._expiration_timestamp = (
-      pre_request_timestamp - 10 + payload['expires_in']
-    )
+    result = response.json()
+    self._token = result['access_token']
+    self._scopes = set(result['scope'].split(" "))
 
-    self.access_token = payload['access_token']
-    self.scopes = set(payload['scope'].split(" "))
-
-  def _clear_token(self):
-    self.access_token = None
+  def clear(self):
+    self._token = None

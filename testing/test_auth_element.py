@@ -8,8 +8,7 @@ class TestAuthorize(unittest.TestCase):
     auth = Authorize("https://apistore.dsparkanalytics.com.au/token", 
                      "consumer_key",
                      "consumer_secret" )
-    auth.request_token()
-    self.assertTrue(auth.access_token is not None)
+    self.assertTrue(auth._token is not None)
 
 if __name__ == '__main__':
     unittest.main()
