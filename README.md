@@ -84,6 +84,7 @@ string_extraction_fn = ExtractionFn(typ='string')
 
 
 # Config
+Method 1:
 Please put your key and secret into config/genome_api.ini in root directory. Example for genome_api.ini would be:
 
 ```
@@ -91,3 +92,12 @@ Please put your key and secret into config/genome_api.ini in root directory. Exa
 consumer_key = *****************
 consumer_secret = ***************
 ```
+
+Method 2:
+set 'consumer_key' and 'consumer_secret' as environment variable
+
+```python
+## setting envior in jupyter
+%env consumer_key = *********
+%env consumer_secret = *********
+``` 
