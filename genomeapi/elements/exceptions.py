@@ -6,7 +6,9 @@ class APIException(Exception):
 
 class RequestException(Exception):
   def __init__(self, exp):
-    super().__init__("RequestException: {}".format(exp))
+    super().__init__(
+      "RequestException: {}".format(exp)
+    )
 
 class ResponseException(Exception):
   def __init__(self, response):

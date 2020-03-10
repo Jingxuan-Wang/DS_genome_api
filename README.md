@@ -99,7 +99,7 @@ string_extraction_fn = ExtractionFn(typ='string')
 ```
 
 
-# Config
+# Authorize
 Method 1:
 Please put your key and secret into config/genome_api.ini in root directory. Example for genome_api.ini would be:
 
@@ -117,3 +117,11 @@ set 'consumer_key' and 'consumer_secret' as environment variable
 %env consumer_key = *********
 %env consumer_secret = *********
 ``` 
+
+Method 3:
+provide 'token' as a string variable
+```python
+token = *********
+from genomeapi.dspark import Dspark
+dspark = Dspark(token=token)
+```

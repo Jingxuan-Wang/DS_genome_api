@@ -9,11 +9,15 @@ class Dspark:
   _URL = "https://apistore.dsparkanalytics.com.au"
 
   def __init__(self,
+               token=None,
                site: str = "DEFAULT",
                ):
     self.config = Config(site)
 
-    self.auth = Authorize(self._URL+"/token", self.config.consumer_key, self.config.consumer_secret)
+    self.auth = Authorize(url=self._URL+"/token",
+                          consumer_key=self.config.consumer_key,
+                          consumer_secret=self.config.consumer_secret,
+                          token=token)
 
     self.stay_point = StayPoint(self.auth._token)
     self.link_meta = LinkMeta(self.auth._token)
