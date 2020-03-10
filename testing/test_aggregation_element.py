@@ -1,7 +1,7 @@
 __author__ = 'jingxuan'
 import unittest
-from elements.aggregation import Aggregation
-from elements.exceptions import APIException
+from genomeapi.elements.aggregation import Aggregation
+from genomeapi.elements.exceptions import APIException
 
 
 class AggregationTest(unittest.TestCase):

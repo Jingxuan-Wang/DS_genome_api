@@ -1,6 +1,6 @@
 __author__ = 'jingxuan'
-from genome_api.elements import Dates, Aggregation, DimensionFacet, LogicFilter, RequestException
-from genome_api.elements import Granularity, Location, TimeSeriesReference
+from genomeapi.elements import Dates, Aggregation, DimensionFacet, LogicFilter, RequestException
+from genomeapi.elements import Granularity, Location, TimeSeriesReference
 
 import json
 import requests

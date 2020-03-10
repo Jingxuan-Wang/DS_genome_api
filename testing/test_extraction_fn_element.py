@@ -1,6 +1,6 @@
 __author__ = 'jingxuan'
 import unittest
-from elements.extraction_fn import ExtractionFn
+from genomeapi.elements.extraction_fn import ExtractionFn
 
 class TestExtractionFn(unittest.TestCase):
   def test_string_extraction_fn(self):

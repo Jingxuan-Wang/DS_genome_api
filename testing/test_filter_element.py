@@ -1,8 +1,8 @@
 __author__ = 'jingxuan'
 
 import unittest
-from elements.filter import Filter
-from elements.extraction_fn import ExtractionFn
+from genomeapi.elements.filter import Filter
+from genomeapi.elements.extraction_fn import ExtractionFn
 
 class TestFilter(unittest.TestCase):
   def test_selector(self):

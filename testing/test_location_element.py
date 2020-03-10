@@ -1,8 +1,8 @@
 __author__ = 'jingxuan'
 
 import unittest
-from elements.location import Location
-from elements.exceptions import APIException
+from genomeapi.elements.location import Location
+from genomeapi.elements.exceptions import APIException
 
 class TestLocation(unittest.TestCase):
   def test_location_au(self):

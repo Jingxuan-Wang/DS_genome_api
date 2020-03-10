@@ -1,7 +1,7 @@
 __author__ = 'jingxuan'
 
 import unittest
-from config import Config
+from genomeapi.config import Config
 
 class TestConfig(unittest.TestCase):
 

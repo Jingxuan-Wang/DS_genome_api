@@ -1,9 +1,9 @@
 __author__ = 'jingxuan'
 
 import unittest
-from api.basic_query import BasicQuery
-from elements.filter import Filter
-from elements.extraction_fn import ExtractionFn
+from genomeapi.api.basic_query import BasicQuery
+from genomeapi.elements.filter import Filter
+from genomeapi.elements.extraction_fn import ExtractionFn
 
 class TestBasicQuery(unittest.TestCase):
   def test_query1(self):

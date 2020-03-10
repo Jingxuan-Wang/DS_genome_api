@@ -1,7 +1,7 @@
 __author__ = 'jingxuan'
 
 import unittest
-from elements.dates import Dates
+from genomeapi.elements.dates import Dates
 
 class DateTest(unittest.TestCase):
 

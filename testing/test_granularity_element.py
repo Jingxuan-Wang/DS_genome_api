@@ -1,8 +1,8 @@
 __author__ = 'jingxuan'
 
 import unittest
-from elements.granularity import Granularity
-from elements.exceptions import APIException
+from genomeapi.elements.granularity import Granularity
+from genomeapi.elements.exceptions import APIException
 
 class TestGranularity(unittest.TestCase):
   def test_granularity(self):

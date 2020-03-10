@@ -18,11 +18,27 @@ link meta: v1
 # API Basic Element:
 please refer to https://dataspark.atlassian.net/wiki/spaces/Peking/pages/777847016/Common+API+Elements
 
+# Install
+please pull the repo by running following command:
+
+```bash
+git pull https://github.com/Jingxuan-Wang/DS_genome_api.git
+```
+
+check into the package folder and run:
+
+```bash
+python3 setup.py build
+
+python3 setup.py install
+```
+
+
 # Usage
 
 ## Basic Query
 ```python
-from genome_api.dspark import Dspark
+from genomeapi.dspark import Dspark
 
 dspark = Dspark()
 dspark.stay_point.dates(begin_date="2019-06-15")
@@ -48,7 +64,7 @@ dspark.od_matrix.aggregate(metric="total_stays", typ="doubleSum", described_as="
 
 ## Filter
 ```python
-from genome_api.elements import Filter
+from genomeapi.elements import Filter
 filter = Filter()
 ## normal filter example
 dspark.stay_point.filter(filter.in_filter("VIC17483860", "VIC6052402","NSW500187142", dimension="link_id"))
@@ -73,7 +89,7 @@ dspark.stay_point.filter(not_filter)
 
 ## Extraction Function
 ```python
-from genome_api.elements import ExtractionFn
+from genomeapi.elements import ExtractionFn
 ## string extraction function example
 string_extraction_fn = ExtractionFn(typ='string')
 

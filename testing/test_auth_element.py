@@ -1,7 +1,7 @@
 __author__ = 'jingxuan'
 
 import unittest
-from api.auth import Authorize
+from genomeapi.api import Authorize
 
 class TestAuthorize(unittest.TestCase):
   def test_auth(self):

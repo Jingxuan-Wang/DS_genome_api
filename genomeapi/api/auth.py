@@ -1,5 +1,5 @@
 __author__ = 'jingxuan'
-from genome_api.elements import ResponseException
+from genomeapi.elements import ResponseException
 
 import time
 from requests import post

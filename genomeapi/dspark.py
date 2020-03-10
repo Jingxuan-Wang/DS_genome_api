@@ -2,8 +2,8 @@ __author__ = 'jingxuan'
 """
 This is a python package that is used to query Dspark mobility genome API
 """
-from genome_api.config import Config
-from genome_api.api import Authorize, DiscreteVisit, LinkMeta, ODMatrix, ODThroughLink, StayPoint
+from genomeapi.config import Config
+from genomeapi.api import Authorize, DiscreteVisit, LinkMeta, ODMatrix, ODThroughLink, StayPoint
 
 class Dspark:
   _URL = "https://apistore.dsparkanalytics.com.au"

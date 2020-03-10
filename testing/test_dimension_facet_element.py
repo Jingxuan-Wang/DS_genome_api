@@ -1,8 +1,8 @@
 __author__ = 'jingxuan'
 
 import unittest
-from elements.dimension_facet import DimensionFacet
-from elements.extraction_fn import ExtractionFn
+from genomeapi.elements.dimension_facet import DimensionFacet
+from genomeapi.elements.extraction_fn import ExtractionFn
 
 class DimensionFacetTest(unittest.TestCase):
   def test_string_dimension_facet(self):
