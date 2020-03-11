@@ -8,17 +8,11 @@ import base64
 
 class Authorize:
   
-  def __init__(self, url: str, consumer_key: str = "", consumer_secret: str = "", token = None):
+  def __init__(self, url: str, consumer_key: str = "", consumer_secret: str = ""):
     self._token = None
     self._scopes = None
     self._url = url
-    if token is None:
-      if consumer_key == "" or consumer_secret == "":
-        raise RequestException("please provide key/secret in 'ini' file or as env variable or give the token")
-      self.get_token(consumer_key, consumer_secret)
-    else:
-      self._token = token
-      self._scopes = "Unknown"
+    self.get_token(consumer_key, consumer_secret)
 
   def get_token(self, consumer_key:str, consumer_secret:str):
     keySecret = (consumer_key + ":" + consumer_secret).encode('utf-8')

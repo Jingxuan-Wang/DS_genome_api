@@ -24,8 +24,10 @@ class Config:
 
   def fetch_value(self):
     try:
-      if hasattr(self, "config_value"):
+      ## env variables are missing
+      if os.environ.get("consumer_key") is None and os.environ.get("consumer_secret") is None:
         [setattr(self, i, self.config_value[i]) for i in ["consumer_key", "consumer_secret"]]
+      ## env variables are set
       else:
         [setattr(self, i, os.environ[i]) for i in ["consumer_key", "consumer_secret"]]
     except:

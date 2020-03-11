@@ -12,15 +12,21 @@ class Dspark:
                token=None,
                site: str = "DEFAULT",
                ):
-    self.config = Config(site)
+    if token is None:
+      ## token not given, trying to fetch with given consumer_key and secret
+      self.config = Config(site)
 
-    self.auth = Authorize(url=self._URL+"/token",
-                          consumer_key=self.config.consumer_key,
-                          consumer_secret=self.config.consumer_secret,
-                          token=token)
+      self.auth = Authorize(url=self._URL+"/token",
+                            consumer_key=self.config.consumer_key,
+                            consumer_secret=self.config.consumer_secret,
+                            token=token)
+      _token = self.auth._token
+    else:
+      ## token is given, use the token directly
+      _token = token
 
-    self.stay_point = StayPoint(self.auth._token)
-    self.link_meta = LinkMeta(self.auth._token)
-    self.discrete_visit = DiscreteVisit(self.auth._token)
-    self.od_matrix = ODMatrix(self.auth._token)
-    self.od_through_link = ODThroughLink(self.auth._token)
+    self.stay_point = StayPoint(_token)
+    self.link_meta = LinkMeta(_token)
+    self.discrete_visit = DiscreteVisit(_token)
+    self.od_matrix = ODMatrix(_token)
+    self.od_through_link = ODThroughLink(_token)
