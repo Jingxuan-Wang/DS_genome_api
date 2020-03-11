@@ -1,4 +1,4 @@
-# Readme
+# Mobility Genome API
 This is a python package for Dspark API. It includes api requests for discrete visit, stay point, link meta, od matrix and od through link.
 
 # Dependency
