@@ -18,8 +18,7 @@ class Dspark:
 
       self.auth = Authorize(url=self._URL+"/token",
                             consumer_key=self.config.consumer_key,
-                            consumer_secret=self.config.consumer_secret,
-                            token=token)
+                            consumer_secret=self.config.consumer_secret)
       _token = self.auth._token
     else:
       ## token is given, use the token directly
