@@ -15,8 +15,8 @@ class BasicQuery:
                    "odthroughlink": "v1",
                    "linkmeta": "v1"}
   def __init__(self, end_point:str, token:str = ""):
-    self.query_path = "/".join([self._URLS, end_point, self._API_ENDPOINT[end_point], 'query'])
-    self.token = token
+    self._query_path = "/".join([self._URLS, end_point, self._API_ENDPOINT[end_point], 'query'])
+    self._token = token
     self._dt = None
     self._aggs = None
     self._ts_reference = None
@@ -24,7 +24,7 @@ class BasicQuery:
     self._grant = None
     self._loc = None
     self._filt = None
-    self.req = {}
+    self._req = {}
 
   def dates(self, begin_date: str, end_date: str = None):
     dt = Dates()
@@ -67,31 +67,31 @@ class BasicQuery:
     return self
 
   def dumps(self):
-    self.req.update(self._dt)
-    self.req.update(self._aggs.to_dict())
-    self.req.update(self._grant)
+    self._req.update(self._dt)
+    self._req.update(self._aggs.to_dict())
+    self._req.update(self._grant)
 
     if self._loc is not None:
-      self.req.update(self._loc)
+      self._req.update(self._loc)
 
     if self._ts_reference is not None:
-      self.req.update(self._ts_reference)
+      self._req.update(self._ts_reference)
 
     if self._filt is not None:
-      self.req.update(self._filt)
+      self._req.update(self._filt)
 
     if self._d_facets is not None:
-      self.req.update(self._d_facets)
+      self._req.update(self._d_facets)
 
-    self.json = json.dumps(self.req)
+    self.json = json.dumps(self._req)
     
   def request(self):
-    if len(self.req) == 0:
+    if len(self._req) == 0:
       self.dumps()
-    response = requests.post(self.query_path,
+    response = requests.post(self._query_path,
                             data=self.json,
                             headers={
-                             'Authorization': 'Bearer '+ self.token,
+                             'Authorization': 'Bearer ' + self._token,
                               'Content-Type': 'application/json'
                             })
 
@@ -112,5 +112,5 @@ class BasicQuery:
     self._grant = None
     self._loc = None
     self._filt = None
-    self.req = {}
+    self._req = {}
     return self
