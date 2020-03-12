@@ -21,7 +21,8 @@ class Location(Element):
     else:
       pass
 
-  def __call__(self, location_type, level_type, id):
+  def __call__(self, location_type, level_type, id, direction=None):
+    level_type = level_type if direction is None else direction+"_"+level_type
     self.validating(location_type, level_type)
     value = self.form_obj(locationType=location_type, levelType=level_type, id=id)
     return self.form_obj(location=value)

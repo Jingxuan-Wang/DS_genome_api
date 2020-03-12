@@ -53,5 +53,17 @@ class TestLocation(unittest.TestCase):
     }
     self.assertEqual(res, expected)
 
+  def test_location_with_direction(self):
+    loc = Location()
+    res = loc(location_type="locationHierarchyLevel", level_type='sa4', id='126', direction='origin')
+    expected = {
+      "location": {
+        "locationType": "locationHierarchyLevel",
+        "levelType": "origin_sa4",
+        "id": "126",
+      }
+    }
+    self.assertEqual(res, expected)
+
 if __name__ == '__main__':
     unittest.main()
