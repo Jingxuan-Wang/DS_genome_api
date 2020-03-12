@@ -1,6 +1,7 @@
 __author__ = 'jingxuan'
 
 from .element import Element
+from .exceptions import APIException
 
 class SubStringFn(Element):
   def __call__(self, index: int, length: int):
