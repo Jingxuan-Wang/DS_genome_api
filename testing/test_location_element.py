@@ -41,5 +41,17 @@ class TestLocation(unittest.TestCase):
       loc(location_type="locationHierarchyLevel", level_type='sa5', id='126')
     self.assertTrue("Sorry, we don't have such type for location", str(context.exception))
 
+  def test_location_level_exception_for_origin(self):
+    loc = Location()
+    res = loc(location_type="locationHierarchyLevel", level_type='origin_sa4', id='126')
+    expected = {
+      "location": {
+        "locationType": "locationHierarchyLevel",
+        "levelType": "origin_sa4",
+        "id": "126"
+      }
+    }
+    self.assertEqual(res, expected)
+
 if __name__ == '__main__':
     unittest.main()

@@ -16,7 +16,7 @@ class Location(Element):
   def validating(self, location_type, level_type):
     if location_type not in self._LOCATION_TYPES:
       raise APIException("Sorry, we don't support this location type for now")
-    elif level_type not in self._LEVEL_TYPES:
+    elif level_type.replace("origin_", "").replace("destination_", "") not in self._LEVEL_TYPES:
       raise APIException("Sorry, we don't have such type for location")
     else:
       pass
