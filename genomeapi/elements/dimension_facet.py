@@ -5,15 +5,15 @@ from .exceptions import APIException
 from .extraction_fn import ExtractionFn
 
 class StringDimensionFacets(Element):
-  def __call__(self, *dimensions):
-    if len(dimensions) == 1:
-      return self.form_obj(dimensionFacets=dimensions[0])
-    else:
-      v = list(dimensions)
+  def __call__(self, dimension=None, output_name=None, value=None, extraction_fn=None):
+    if isinstance(dimension, str):
+      return self.form_obj(dimensionFacets=[dimension])
+    elif isinstance(dimension, list):
+      v = dimension
       return self.form_obj(dimensionFacets=v)
 
 class DefaultDimensionFacets(Element):
-  def __call__(self, dimension=None, output_name=None):
+  def __call__(self, dimension=None, output_name=None, value=None, extraction_fn=None):
     if output_name:
       value = self.form_obj(dimension=dimension, outputName=output_name, type="default")
       return self.form_obj(dimensionFacets=[value])
@@ -22,7 +22,10 @@ class DefaultDimensionFacets(Element):
       return self.form_obj(dimensionFacets=[value])
 
 class ExtractionDimensionFacets(Element):
-  def __call__(self, dimension:str,  extraction_fn, output_name=None):
+  def __call__(self, dimension=None, output_name=None, value=None, extraction_fn=None):
+    if extraction_fn is None:
+      raise APIException("please set value to extraction_fn")
+
     if extraction_fn['type'] == 'timeFormat':
       if dimension != "__time":
         raise APIException("Time extraction must use '__time' as dimension")
@@ -36,9 +39,9 @@ class ExtractionDimensionFacets(Element):
     return self.form_obj(dimensionFacets=[value])
 
 class ListFilteredDimensionFacets(Element):
-  def __call__(self, dimension=None, output_name=None, values=None):
+  def __call__(self, dimension=None, output_name=None, value=None, extraction_fn=None):
     delegate = self.form_obj(dimension=dimension, outputName=output_name, type='default')
-    value = self.form_obj(delegate=delegate, dimension=dimension, values=values, type="listFiltered")
+    value = self.form_obj(delegate=delegate, dimension=dimension, values=value, type="listFiltered")
     return self.form_obj(dimensionFacets=[value])
 
 

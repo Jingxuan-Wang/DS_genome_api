@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 
 setup(
   name='genomeapi',
-  version='1.0',
+  version='1.01',
   packages=find_packages(),
   install_requires=['pandas==1.0.1',
                     'requests==2.23.0',

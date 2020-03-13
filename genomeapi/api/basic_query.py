@@ -39,9 +39,9 @@ class BasicQuery:
       self._aggs += agg(metric=metric, typ=typ, described_as=described_as) ## adding other Aggregations Object to self.aggs
     return self
 
-  def dimension_facets(self, *dimension, output_name=None, typ="String"):
-    d_facets = DimensionFacet()
-    self._d_facets = d_facets(*dimension, output_name=output_name, typ=typ)
+  def dimension_facets(self, dimension=None, output_name=None, value=None, extraction_fn=None, typ="string"):
+    d_facets = DimensionFacet(typ=typ)
+    self._d_facets = d_facets(dimension=dimension, output_name=output_name, value=value, extraction_fn=extraction_fn)
     return self
 
   def granularity(self, period, typ="period"):
