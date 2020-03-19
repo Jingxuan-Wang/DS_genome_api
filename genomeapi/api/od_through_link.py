@@ -20,7 +20,8 @@ class ODThroughLink(BasicQuery):
     self._req.update(self._dt)
     self._req.update(self._aggs.to_dict())
     self._req.update(self._grant)
-    self._req.update(self._link)
+    if self._link is not None:
+      self._req.update(self._link)
 
     if self._loc is not None:
       self._req.update(self._loc)
