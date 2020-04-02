@@ -33,6 +33,11 @@ python3 setup.py build
 python3 setup.py install
 ```
 
+or using whl file to install:
+
+```bash
+pip install *.whl
+```
 
 # Usage
 
