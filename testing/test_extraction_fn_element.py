@@ -7,11 +7,9 @@ class TestExtractionFn(unittest.TestCase):
     string_extraction_fn = ExtractionFn(typ='string')
     res = string_extraction_fn(index=1, length=4)
     expected = {
-      "extractionFn": {
         "type": "substring",
         "index": 1,
         "length": 4
-      }
     }
     self.assertEqual(res, expected)
 
@@ -19,12 +17,10 @@ class TestExtractionFn(unittest.TestCase):
     time_format_extraction_fn = ExtractionFn(typ='time')
     res = time_format_extraction_fn(format='EEEE', timezone='Australia/Sydney')
     expected = {
-      "extractionFn": {
         "type": "timeFormat",
         "format": "EEEE",
         "timeZone": "Australia/Sydney",
         "locale": "en"
-      }
     }
     self.assertEqual(res, expected)
 

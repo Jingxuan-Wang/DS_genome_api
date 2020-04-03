@@ -43,7 +43,7 @@ class TestBasicQuery(unittest.TestCase):
         "period": "P31D"
       }
     }
-    self.assertEqual(query.req, expected)
+    self.assertEqual(query._req, expected)
 
   def test_query2(self):
     query = BasicQuery('linkmeta')
@@ -75,7 +75,7 @@ class TestBasicQuery(unittest.TestCase):
         "describedAs": "Trips"
       }
     ]}
-    self.assertEqual(query.req, expected)
+    self.assertEqual(query._req, expected)
 
   def test_query3(self):
     query = BasicQuery('linkmeta')
@@ -117,7 +117,7 @@ class TestBasicQuery(unittest.TestCase):
       "timeSeriesReference": "arrival"
     }
 
-    self.assertEqual(query.req, expected)
+    self.assertEqual(query._req, expected)
 
   def test_query4(self):
     extraction = ExtractionFn(typ='time')
@@ -137,6 +137,96 @@ class TestBasicQuery(unittest.TestCase):
     query.granularity(period="P7D")
     query.dumps()
 
+    expected = {
+      "dates": {
+        "type": "range",
+        "beginDate": "2019-07-07",
+        "endDate": "2019-08-03"
+      },
+      "location": {
+        "locationType": "locationHierarchyLevel",
+        "levelType": "sa2",
+        "id": "117031337"
+      },
+      "filter": {
+        "type": "or",
+        "fields": [
+          {
+            "type": "selector",
+            "dimension": "__time",
+            "value": "Monday",
+            "extractionFn": {
+              "type": "timeFormat",
+              "format": "EEEE",
+              "timeZone": "Australia/Sydney",
+              "locale": "en"
+            }
+          },
+          {
+            "type": "selector",
+            "dimension": "__time",
+            "value": "Tuesday",
+            "extractionFn": {
+              "type": "timeFormat",
+              "format": "EEEE",
+              "timeZone": "Australia/Sydney",
+              "locale": "en"
+            }
+          },
+          {
+            "type": "selector",
+            "dimension": "__time",
+            "value": "Wednesday",
+            "extractionFn": {
+              "type": "timeFormat",
+              "format": "EEEE",
+              "timeZone": "Australia/Sydney",
+              "locale": "en"
+            }
+          },
+          {
+            "type": "selector",
+            "dimension": "__time",
+            "value": "Thursday",
+            "extractionFn": {
+              "type": "timeFormat",
+              "format": "EEEE",
+              "timeZone": "Australia/Sydney",
+              "locale": "en"
+            }
+          },
+          {
+            "type": "selector",
+            "dimension": "__time",
+            "value": "Friday",
+            "extractionFn": {
+              "type": "timeFormat",
+              "format": "EEEE",
+              "timeZone": "Australia/Sydney",
+              "locale": "en"
+            }
+          }
+        ]
+      },
+      "aggregations": [
+        {
+          "metric": "unique_agents",
+          "type": "hyperUnique",
+          "describedAs": "unique_agents"
+        },
+        {
+          "metric": "total_stays",
+          "type": "doubleSum",
+          "describedAs": "total_stays"
+        }
+      ],
+      "queryGranularity": {
+        "type": "period",
+        "period": "P7D"
+      }
+      }
+
+    self.assertEqual(query._req, expected)
 
 if __name__ == '__main__':
     unittest.main()

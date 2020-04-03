@@ -156,7 +156,19 @@ class TestFilter(unittest.TestCase):
     filter1 = Filter()
     extraction = ExtractionFn(typ='time')
     res = filter1.selector(dimension='__time', value='AUSTRALIA', extraction_fn=extraction(format="EEEE", timezone="Australia/Sydney"))
-    print(res.to_dict())
+    expected = {
+      'filter': {
+        'dimension': '__time',
+        'value': 'AUSTRALIA',
+        'type': 'selector',
+        'extractionFn': {
+          'format': 'EEEE',
+          'timeZone': 'Australia/Sydney',
+          'locale': 'en',
+          'type': 'timeFormat'}
+      }
+    }
+    self.assertEqual(res.to_dict(), expected)
 
 if __name__ == '__main__':
     unittest.main()

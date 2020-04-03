@@ -1,11 +1,29 @@
-__author__ = 'jingxuan'
-from genomeapi.elements import Dates, Aggregation, DimensionFacet, LogicFilter, RequestException
-from genomeapi.elements import Granularity, Location, TimeSeriesReference
+#  Copyright © DataSpark Pte Ltd 2014 - 2020.
+#
+#  This software and any related documentation contain confidential and proprietary information of
+#  DataSpark and its licensors (if any). Use of this software and any related documentation is
+#  governed by the terms of your written agreement with DataSpark. You may not use, download or
+#  install this software or any related documentation without obtaining an appropriate licence
+#  agreement from DataSpark.
+#
+#  All rights reserved.
+
+"""
+   This is basic operations for API query
+
+   @author: jingxuan
+   @maintainer: jingxuan
+   @last editor: jingxuan
+   @last edit time: 3/4/20
+"""
 
 import json
 import requests
 from requests.status_codes import codes
 from pandas import json_normalize
+
+from genomeapi.elements import Dates, Aggregation, DimensionFacet, LogicFilter, RequestException
+from genomeapi.elements import Granularity, Location, TimeSeriesReference
 
 class BasicQuery:
   _URLS = "https://apistore.dsparkanalytics.com.au"

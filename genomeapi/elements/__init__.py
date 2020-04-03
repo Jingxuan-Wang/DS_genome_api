@@ -1,4 +1,3 @@
-__author__ = 'jingxuan'
 from genomeapi.elements.aggregation import Aggregation
 from genomeapi.elements.dates import Dates
 from genomeapi.elements.dimension_facet import DimensionFacet
