@@ -70,9 +70,9 @@ class BasicQuery:
     self._grant = grant(period, typ)
     return self
 
-  def location(self, location_type, level_type, id, country="AU"):
+  def location(self, location_type, level_type, id, country="AU", direction=None):
     loc = Location(country=country)
-    self._loc = loc(location_type, level_type, id)
+    self._loc = loc(location_type, level_type, id, direction)
     return self
 
   def filter(self, filt):
