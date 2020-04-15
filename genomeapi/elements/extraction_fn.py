@@ -31,8 +31,8 @@ class TimeFormatFn(Element):
     return self.v
 
 class ExtractionFn:
-  fns = {'string': SubStringFn, 'time': TimeFormatFn}
-  def __new__(cls, typ='string'):
+  fns = {'substring': SubStringFn, 'timeFormat': TimeFormatFn}
+  def __new__(cls, typ='substring'):
     cls.typ = typ
     if typ in cls.fns.keys():
       return cls.fns[typ]()

@@ -20,7 +20,10 @@
 import json
 import requests
 from requests.status_codes import codes
-from pandas import json_normalize
+try:
+  from pandas import json_normalize
+except:
+  from pandas.io.json import json_normalize
 
 from genomeapi.elements import Dates, Aggregation, DimensionFacet, LogicFilter, RequestException
 from genomeapi.elements import Granularity, Location, TimeSeriesReference

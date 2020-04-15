@@ -41,6 +41,18 @@ pip install *.whl
 
 # Usage
 
+## Latest Change
+### For Extraction Fn
+```python
+from genomeapi.elements import ExtractionFn
+## string extraction function example
+string_extraction_fn = ExtractionFn(typ='substring') # not 'string' as type
+
+## time format extraction function example
+
+string_extraction_fn = ExtractionFn(typ='timeFormat') # not 'time' as type
+```
+
 ## Basic Query
 ```python
 from genomeapi.dspark import Dspark
@@ -96,11 +108,11 @@ dspark.stay_point.filter(not_filter)
 ```python
 from genomeapi.elements import ExtractionFn
 ## string extraction function example
-string_extraction_fn = ExtractionFn(typ='string')
+string_extraction_fn = ExtractionFn(typ='string') 
 
-## numeric extraction function example
+## time format extraction function example
 
-string_extraction_fn = ExtractionFn(typ='string')
+string_extraction_fn = ExtractionFn(typ='time')
 ```
 
 
