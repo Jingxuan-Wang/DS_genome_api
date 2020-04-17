@@ -28,7 +28,7 @@ class Location(Element):
             self._LEVEL_TYPES = ['staypoint_subzone', 'staypoint_planningarea',
                                  'staypoint_planningregion', 'building']
         elif country == "AU":
-            self._LEVEL_TYPES = ['sa2', 'sa3', 'sa4', 'gcc', 'state', 'building', 'gcc', 'poa']
+            self._LEVEL_TYPES = ['building', 'sa2', 'sa3', 'sa4', 'gcc', 'poa', 'state']
 
 
     def validating(self, location_type, level_type):

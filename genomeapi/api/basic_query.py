@@ -25,7 +25,7 @@ try:
 except:
   from pandas.io.json import json_normalize
 
-from genomeapi.elements import Dates, Aggregation, DimensionFacet, LogicFilter, ResponseException
+from genomeapi.elements import Dates, Aggregation, DimensionFacet, LogicFilter, ResponseException, RequestException
 from genomeapi.elements import Granularity, Location, TimeSeriesReference
 
 class BasicQuery:
@@ -119,6 +119,8 @@ class BasicQuery:
     if response.status_code != codes['ok']:
       raise ResponseException(response)
     else:
+      if len(response.json()) == 0:
+        raise RequestException("API return is empty, please check your query, especially the date you are querying")
       return response.json()
 
   def to_df(self, json_data):
