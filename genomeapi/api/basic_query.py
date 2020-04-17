@@ -107,7 +107,7 @@ class BasicQuery:
     self.json = json.dumps(self._req)
     
   def request(self):
-    if len(self._req) != 0:
+    if len(self._req) == 0:
       self.dumps()
     response = requests.post(self._query_path,
                             data=self.json,

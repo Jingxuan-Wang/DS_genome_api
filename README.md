@@ -146,5 +146,4 @@ dspark = Dspark(token=token)
 # Development Log
 ## 1.0.3
 1. change response error from RequestException to ResponseException in order to show more detailed error return from API
-2. fix an issue that Dspark.\*.dumps need to be executed before Dspark.\*.request
 
