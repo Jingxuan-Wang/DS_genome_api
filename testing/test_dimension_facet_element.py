@@ -50,7 +50,7 @@ class DimensionFacetTest(unittest.TestCase):
     self.assertEqual(res, expected)
 
   def test_extraction_dimension_facet(self):
-    extraction = ExtractionFn(typ="time")
+    extraction = ExtractionFn(typ="timeFormat")
     extraction_dimension_facet = DimensionFacet(typ='extraction')
     res = extraction_dimension_facet(dimension="__time", extraction_fn=extraction(format="EEEE-HH", timezone="Australia/Sydney"), output_name="Weekday-Hour")
     expected = {
