@@ -144,6 +144,10 @@ dspark = Dspark(token=token)
 ```
 
 # Development Log
+## 1.0.4
+1. fix the issue that filter doesn't allow multiple layers of logical operations
+
 ## 1.0.3
 1. change response error from RequestException to ResponseException in order to show more detailed error return from API
 2. Add RequestException message when api return is empty
+

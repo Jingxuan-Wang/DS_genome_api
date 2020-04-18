@@ -34,6 +34,16 @@ class LogicFilter(Element):
       v = self.form_obj(fields=self.v, type=self._logic)
       return self.form_obj(filter=v)
 
+  def to_value(self):
+    if self._logic is None:
+      return self.v
+    elif self._logic is 'not':
+      v = self.form_obj(field=self.v, type=self._logic)
+      return v
+    else:
+      v = self.form_obj(fields=self.v, type=self._logic)
+      return v
+
   def selector(self, dimension: str, value:str, extraction_fn=None):
     if extraction_fn is None:
       self.v = self.form_obj(dimension=dimension, value=value, type='selector')
@@ -68,26 +78,31 @@ class LogicFilter(Element):
     return self
 
   def __and__(self, other):
-    if self._logic is None:
+    if self._logic is None: ## first and operation
       self_v = [self.v]
-    elif self._logic == 'and':
+      other_v = [other.v]
+    elif self._logic == 'and': ## consecutive and operation
       self_v = self.v
-    else:
-      raise APIException("API doesn't accept mixed logic")
-    other_v = [other.v]
+      other_v = [other.v]
+    else:  ## and operation on top of or/not operation
+      self_v = [self.to_value()]
+      other_v = [other.to_value()]
     fields = self_v + other_v
     self.v = fields
     self._logic = 'and'
     return self
 
   def __or__(self, other):
-    if self._logic is None:
+    if self._logic is None: ## first or operation
       self_v = [self.v]
-    elif self._logic == 'or':
+      other_v = [other.v]
+    elif self._logic == 'or': ## consecutive or operation
       self_v = self.v
-    else:
-      raise APIException("API doesn't accept mixed logic")
-    other_v = [other.v]
+      other_v = [other.v]
+    else:  ## or operation on top of and/not operation
+      self_v = [self.to_value()]
+      other_v = [other.to_value()]
+
     fields = self_v + other_v
     self.v = fields
     self._logic = 'or'

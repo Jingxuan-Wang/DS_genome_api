@@ -87,9 +87,7 @@ class TestFilter(unittest.TestCase):
 
   def test_and_logic(self):
     filter = Filter()
-    res = filter.selector(dimension='agent_gender', value='M') \
-    & filter.selector(dimension='agent_home_state', value='1') \
-    & filter.bound(dimension='agent_year_of_birth', lower=1969, ordering='numeric')
+    res = filter.selector(dimension='agent_gender', value='M') & filter.selector(dimension='agent_home_state', value='1') & filter.bound(dimension='agent_year_of_birth', lower=1969, ordering='numeric')
 
     expected = {
       "filter": {
@@ -154,7 +152,7 @@ class TestFilter(unittest.TestCase):
 
   def test_extraction_fn_in_filter(self):
     filter1 = Filter()
-    extraction = ExtractionFn(typ='time')
+    extraction = ExtractionFn(typ='timeFormat')
     res = filter1.selector(dimension='__time', value='AUSTRALIA', extraction_fn=extraction(format="EEEE", timezone="Australia/Sydney"))
     expected = {
       'filter': {
@@ -169,6 +167,11 @@ class TestFilter(unittest.TestCase):
       }
     }
     self.assertEqual(res.to_dict(), expected)
+
+  def test_mix_operation(self):
+    filter = Filter()
+    res = (filter.selector(dimension='a', value='x') & filter.selector(dimension="b", value="x")) | (filter.selector(dimension="1", value="y") & filter.selector(dimension="2", value="y"))
+    print(res.to_dict())
 
 if __name__ == '__main__':
     unittest.main()
