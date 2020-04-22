@@ -23,7 +23,7 @@ from .exceptions import APIException
 ##TODO aggregation lack of extraction function
 
 class Aggregation(Element):
-  _NORMAL_TYPES = ['longSum', 'doubleSum', 'longMin', 'doubleMin', 'longMax', 'doubleMax', 'hyperUnique']
+  _NORMAL_TYPES = ['longSum', 'doubleSum', 'longMin', 'doubleMin', 'longMax', 'doubleMax', 'hyperUnique', 'long', 'hyperLog']
 
   def validating(self, typ):
     if typ not in self._NORMAL_TYPES:
