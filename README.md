@@ -73,6 +73,15 @@ dspark.stay_point.to_df(data)
 dspark.stay_point.json
 ```
 
+## Switch endpoint
+```python
+dspark.stay_point ## endpoint for stay point v2
+dspark.od_matrix ## endpoint for od matrix v3
+dspark.discrete_vist ## endpoint for discrete visit v2
+dspark.od_through_link ## endpoint for od through link v1
+dspark.link_meta ## endpoint for link meta v1
+```
+
 ## Multiple aggregations
 ```python
 dspark.od_matrix.aggregate(metric="unique_agents", typ="hyperUnique", described_as="unique_agents")
