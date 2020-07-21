@@ -26,6 +26,7 @@ class Dspark:
   def __init__(self,
                token=None,
                site: str = "DEFAULT",
+               proxies: dict = {}
                ):
     if token is None:
       ## token not given, trying to fetch with given consumer_key and secret
@@ -39,8 +40,8 @@ class Dspark:
       ## token is given, use the token directly
       _token = token
 
-    self.stay_point = StayPoint(_token)
-    self.link_meta = LinkMeta(_token)
-    self.discrete_visit = DiscreteVisit(_token)
-    self.od_matrix = ODMatrix(_token)
-    self.od_through_link = ODThroughLink(_token)
+    self.stay_point = StayPoint(_token, proxies = proxies)
+    self.link_meta = LinkMeta(_token, proxies = proxies)
+    self.discrete_visit = DiscreteVisit(_token, proxies = proxies)
+    self.od_matrix = ODMatrix(_token, proxies = proxies)
+    self.od_through_link = ODThroughLink(_token, proxies = proxies)

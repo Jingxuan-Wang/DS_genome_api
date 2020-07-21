@@ -57,7 +57,14 @@ string_extraction_fn = ExtractionFn(typ='timeFormat') # not 'time' as type
 ```python
 from genomeapi.dspark import Dspark
 
+## proxies(optional)
+proxies = {'http': 'http://10.10.1.10:3128', 'https': 'http://10.10.1.10:1080',}
+## with proxies
+dspark = Dspark(proxies=proxies)
+
+## without proxies
 dspark = Dspark()
+
 dspark.stay_point.dates(begin_date="2019-06-15")
 dspark.stay_point.location(location_type="locationHierarchyLevel", level_type="sa2", id="117011325")
 dspark.stay_point.granularity(period="PT1H")
@@ -153,6 +160,9 @@ dspark = Dspark(token=token)
 ```
 
 # Development Log
+## 1.0.5
+1. Add proxies(optional) for api request
+
 ## 1.0.4
 1. fix the issue that filter doesn't allow multiple layers of logical operations
 

@@ -35,7 +35,7 @@ class BasicQuery:
                    "odmatrix": "v3",
                    "odthroughlink": "v1",
                    "linkmeta": "v1"}
-  def __init__(self, end_point:str, token:str = ""):
+  def __init__(self, end_point:str, token:str = "", proxies: dict = {}):
     self._query_path = "/".join([self._URLS, end_point, self._API_ENDPOINT[end_point], 'query'])
     self._token = token
     self._dt = None
@@ -46,6 +46,8 @@ class BasicQuery:
     self._loc = None
     self._filt = None
     self._req = {}
+    self._proxies = proxies
+
 
   def dates(self, begin_date: str, end_date: str = None):
     dt = Dates()
@@ -109,12 +111,22 @@ class BasicQuery:
   def request(self):
     if len(self._req) == 0:
       self.dumps()
-    response = requests.post(self._query_path,
-                            data=self.json,
-                            headers={
-                             'Authorization': 'Bearer ' + self._token,
-                              'Content-Type': 'application/json'
-                            })
+
+    if len(self._proxies > 0):
+      response = requests.post(self._query_path,
+                              data=self.json,
+                              headers={
+                               'Authorization': 'Bearer ' + self._token,
+                                'Content-Type': 'application/json'
+                              },
+                               proxies=self._proxies)
+    else:
+      response = requests.post(self._query_path,
+                               data=self.json,
+                               headers={
+                                 'Authorization': 'Bearer ' + self._token,
+                                 'Content-Type': 'application/json'
+                               })
 
     if response.status_code != codes['ok']:
       raise ResponseException(response)
