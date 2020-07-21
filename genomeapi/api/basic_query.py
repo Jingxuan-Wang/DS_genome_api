@@ -48,7 +48,6 @@ class BasicQuery:
     self._req = {}
     self._proxies = proxies
 
-
   def dates(self, begin_date: str, end_date: str = None):
     dt = Dates()
     self._dt = dt(begin_date, end_date=end_date)
@@ -112,7 +111,7 @@ class BasicQuery:
     if len(self._req) == 0:
       self.dumps()
 
-    if len(self._proxies > 0):
+    if len(self._proxies) > 0:
       response = requests.post(self._query_path,
                               data=self.json,
                               headers={

@@ -20,6 +20,6 @@
 from .basic_query import BasicQuery
 
 class StayPoint(BasicQuery):
-  def __init__(self, token):
-    super().__init__(end_point='staypoint', token=token)
+  def __init__(self, token, proxies: dict={}):
+    super().__init__(end_point='staypoint', token=token, proxies=proxies)
 
