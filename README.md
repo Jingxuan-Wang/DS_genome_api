@@ -122,16 +122,6 @@ not_filter = ~filter.selector(dimension='agent_gender', value='M')
 dspark.stay_point.filter(not_filter)
 ```
 
-## Extraction Function
-```python
-from genomeapi.elements import ExtractionFn
-## string extraction function example
-string_extraction_fn = ExtractionFn(typ='string') 
-
-## time format extraction function example
-
-string_extraction_fn = ExtractionFn(typ='time')
-```
 ## Clear out previous query
 ```python
 dspark.stay_point.clear_all()
