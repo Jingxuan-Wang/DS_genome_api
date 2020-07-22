@@ -132,7 +132,10 @@ string_extraction_fn = ExtractionFn(typ='string')
 
 string_extraction_fn = ExtractionFn(typ='time')
 ```
-
+## Clear out previous query
+```python
+dspark.stay_point.clear_all()
+```
 
 # Authorize
 Method 1:
