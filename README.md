@@ -47,10 +47,12 @@ pip install *.whl
 from genomeapi.elements import ExtractionFn
 ## string extraction function example
 string_extraction_fn = ExtractionFn(typ='substring') # not 'string' as type
+string_extraction_fn(index=1, length=4)
 
 ## time format extraction function example
 
-string_extraction_fn = ExtractionFn(typ='timeFormat') # not 'time' as type
+time_format_extraction_fn = ExtractionFn(typ='timeFormat') # not 'time' as type
+time_format_extraction_fn(format='EEEE', timezone='Australia/Sydney')
 ```
 
 ## Basic Query
