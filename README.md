@@ -155,6 +155,9 @@ dspark = Dspark(token=token)
 ```
 
 # Development Log
+## 1.0.6
+1. Make LinkMeta API functional
+
 ## 1.0.5
 1. Add proxies(optional) for api request
 
