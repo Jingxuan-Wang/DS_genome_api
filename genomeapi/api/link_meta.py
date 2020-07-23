@@ -18,9 +18,27 @@
 """
 
 from .basic_query import BasicQuery
+from genomeapi.elements import BoundingBox
+from genomeapi.elements import APIException
+import json
 
 
 class LinkMeta(BasicQuery):
   def __init__(self, token, proxies: dict={}):
     super().__init__(end_point='linkmeta', token=token, proxies=proxies)
+    self._bbox = None
 
+  def bbox(self, max_coords, min_coords):
+    bounding_box = BoundingBox()
+    self._bbox = bounding_box(max_coords=max_coords, min_coords=min_coords)
+    return self
+
+  def dumps(self):
+    if self._filt is not None:
+      self._req.update(self._filt)
+    elif self._bbox is not None:
+      self._req.update(self._bbox)
+    else:
+      raise APIException("For link meta api, must specify either filter or bounding box")
+
+    self.json = json.dumps(self._req)
