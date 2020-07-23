@@ -53,8 +53,13 @@ class LogicFilter(Element):
       self.v = self.form_obj(dimension=dimension, value=value, type='selector', extractionFn=extraction_fn)
     return self
 
-  def in_filter(self, *values, dimension: str):
-    self.v = self.form_obj(dimension=dimension, values=list(values), type='in')
+  def in_filter(self, *values, dimension: str, value: list=None):
+    if value is None:
+      self.v = self.form_obj(dimension=dimension, values=list(values), type='in')
+    elif isinstance(value, list):
+      self.v = self.form_obj(dimension=dimension, values=value, type='in')
+    else:
+      raise APIException("Value is not a list")
     return self
 
   def bound(self,dimension, lower, ordering, upper=None, **kwargs):
@@ -124,9 +129,9 @@ class Filter:
     filter.selector(dimension=dimension, value=value, extraction_fn=extraction_fn)
     return filter
 
-  def in_filter(self, *values, dimension: str):
+  def in_filter(self, *values, dimension: str, value: list=None):
     filter = LogicFilter()
-    filter.in_filter(*values, dimension=dimension)
+    filter.in_filter(*values, dimension=dimension, value=value)
     return filter
 
   def bound(self,dimension, lower, ordering, upper=None, **kwargs):

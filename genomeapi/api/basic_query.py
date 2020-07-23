@@ -25,8 +25,10 @@ try:
 except:
   from pandas.io.json import json_normalize
 
+from genomeapi.elements import element
 from genomeapi.elements import Dates, Aggregation, DimensionFacet, LogicFilter, ResponseException, RequestException
 from genomeapi.elements import Granularity, Location, TimeSeriesReference
+from genomeapi.elements.element import Element
 
 class BasicQuery:
   _URLS = "https://apistore.dsparkanalytics.com.au"
@@ -61,9 +63,28 @@ class BasicQuery:
       self._aggs += agg(metric=metric, typ=typ, described_as=described_as) ## adding other Aggregations Object to self.aggs
     return self
 
-  def dimension_facets(self, dimension=None, output_name=None, value=None, extraction_fn=None, typ="string"):
-    d_facets = DimensionFacet(typ=typ)
-    self._d_facets = d_facets(dimension=dimension, output_name=output_name, value=value, extraction_fn=extraction_fn)
+  def checkdimfacettyp(self, value):
+    if isinstance(value, str):
+      dfacet = DimensionFacet(typ="string")
+      return dfacet(dimension=value)
+    else:
+      return value
+
+  def dimension_facets(self, *values, dimension=None, output_name=None, value=None, extraction_fn=None, typ="string"):
+    thiselem = Element()
+    values = list(values)
+    if len(values) > 0:
+      self._d_facets = thiselem.form_obj(dimensionFacets=list(map(lambda x: self.checkdimfacettyp(x), values)))
+      #self._d_facets = thiselem.form_obj(dimensionFacets=["test1"])
+    elif isinstance(values, str):
+      d_facets = DimensionFacet(typ=typ)
+      this_d_facet = d_facets(dimension=values, output_name=output_name, value=value, extraction_fn=extraction_fn)
+      #self._d_facets = thiselem.form_obj(dimensionFacets=this_d_facet)
+      self._d_facets = thiselem.form_obj(dimensionFacets=["test"])
+    else:
+      d_facets = DimensionFacet(typ=typ)
+      self._d_facets = thiselem.form_obj(dimensionFacets=list(d_facets(dimension=dimension, output_name=output_name, value=value, extraction_fn=extraction_fn)))
+      #self._d_facets = thiselem.form_obj(dimensionFacets=["test2"])
     return self
 
   def granularity(self, period, typ="period"):
