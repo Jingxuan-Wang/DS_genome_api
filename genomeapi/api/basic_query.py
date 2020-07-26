@@ -71,8 +71,9 @@ class BasicQuery:
       return value
 
   def dimension_facets(self, dimension=None, output_name=None, value=None, extraction_fn=None, typ="string"):
-    d_f = DimensionFacet(typ=typ)
-    self._d_facets = d_f(dimension=dimension, value=value, output_name=output_name, extraction_fn=extraction_fn).to_dict()
+    dfacet = DimensionFacet(typ=typ)
+    dfacet(dimension=dimension, value=value, output_name=output_name, extraction_fn=extraction_fn)
+    self._d_facets = dfacet.to_dict()
     return self
 
   def granularity(self, period, typ="period"):
