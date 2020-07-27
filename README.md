@@ -97,6 +97,15 @@ dspark.od_matrix.aggregate(metric="unique_agents", typ="hyperUnique", described_
 dspark.od_matrix.aggregate(metric="total_stays", typ="doubleSum", described_as="total_stays")
 ```
 
+## Stackable Dimension Facets
+```python
+from genomeapi.elements import DimensionFacet, ExtractionFn
+dfacet = DimensionFacet("extraction")
+extraction = ExtractionFn("timeFormat")
+dfacets = ["origin_sa4","origin_sa3", dfacet(dimension="__time",output_name="hour",extraction_fn=extraction(format="HH",timezone="Australia/Brisbane"))]
+dspark.od_matrix.dimension_facets(dfacets)
+```
+
 ## Filter
 ```python
 from genomeapi.elements import Filter
@@ -157,6 +166,7 @@ dspark = Dspark(token=token)
 # Development Log
 ## 1.0.6
 1. Make LinkMeta API functional
+2. Make dimension facets stackable.
 
 ## 1.0.5
 1. Add proxies(optional) for api request
