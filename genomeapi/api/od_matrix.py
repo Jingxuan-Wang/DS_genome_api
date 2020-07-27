@@ -21,5 +21,5 @@ from .basic_query import BasicQuery
 
 
 class ODMatrix(BasicQuery):
-  def __init__(self, token, proxies: dict={}):
-    super().__init__(end_point='odmatrix', token=token, proxies=proxies)
+  def __init__(self, URL, token, proxies: dict={}):
+    super().__init__(end_point='odmatrix', URL=URL, token=token, proxies=proxies)

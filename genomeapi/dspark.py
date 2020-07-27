@@ -21,9 +21,10 @@ from genomeapi.config import Config
 from genomeapi.api import Authorize, DiscreteVisit, LinkMeta, ODMatrix, ODThroughLink, StayPoint
 
 class Dspark:
-  _URL = "https://apistore.dsparkanalytics.com.au"
+  #_URL = "https://apistore.dsparkanalytics.com.au"
 
   def __init__(self,
+               URL = "https://apistore.dsparkanalytics.com.au",
                token=None,
                site: str = "DEFAULT",
                proxies: dict = {}
@@ -32,7 +33,7 @@ class Dspark:
       ## token not given, trying to fetch with given consumer_key and secret
       self.config = Config(site)
 
-      self.auth = Authorize(url=self._URL+"/token",
+      self.auth = Authorize(url=URL+"/token",
                             consumer_key=self.config.consumer_key,
                             consumer_secret=self.config.consumer_secret)
       _token = self.auth._token
@@ -40,8 +41,8 @@ class Dspark:
       ## token is given, use the token directly
       _token = token
 
-    self.stay_point = StayPoint(_token, proxies=proxies)
-    self.link_meta = LinkMeta(_token, proxies=proxies)
-    self.discrete_visit = DiscreteVisit(_token, proxies=proxies)
-    self.od_matrix = ODMatrix(_token, proxies=proxies)
-    self.od_through_link = ODThroughLink(_token, proxies=proxies)
+    self.stay_point = StayPoint(URL, _token, proxies=proxies)
+    self.link_meta = LinkMeta(URL, _token, proxies=proxies)
+    self.discrete_visit = DiscreteVisit(URL, _token, proxies=proxies)
+    self.od_matrix = ODMatrix(URL, _token, proxies=proxies)
+    self.od_through_link = ODThroughLink(URL, _token, proxies=proxies)

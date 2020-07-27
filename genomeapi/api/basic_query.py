@@ -31,14 +31,15 @@ from genomeapi.elements import Granularity, Location, TimeSeriesReference
 from genomeapi.elements.element import Element
 
 class BasicQuery:
-  _URLS = "https://apistore.dsparkanalytics.com.au"
+  #_URLS = "https://apistore.dsparkanalytics.com.au"
   _API_ENDPOINT = {"discretevisit": "v2",
                    "staypoint": "v2",
                    "odmatrix": "v3",
                    "odthroughlink": "v1",
                    "linkmeta": "v1"}
-  def __init__(self, end_point:str, token:str = "", proxies: dict = {}):
-    self._query_path = "/".join([self._URLS, end_point, self._API_ENDPOINT[end_point], 'query'])
+
+  def __init__(self, end_point:str, URL:str = "https://apistore.dsparkanalytics.com.au"  ,token:str = "", proxies:dict = {}):
+    self._query_path = "/".join([URL, end_point, self._API_ENDPOINT[end_point], 'query'])
     self._token = token
     self._dt = None
     self._aggs = None

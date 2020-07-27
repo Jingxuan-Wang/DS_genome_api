@@ -42,6 +42,18 @@ pip install *.whl
 # Usage
 
 ## Latest Change
+
+### URL parameter
+```python
+from genomeapi.dspark import Dspark
+
+url = 'https://staging-presto.dsparkanalytics.com.au'
+dspark = Dspark(URL = url)
+
+## Default URL: 'https://apistore.dsparkanalytics.com.au'
+dspark = Dspark()
+```
+
 ### For Extraction Fn
 ```python
 from genomeapi.elements import ExtractionFn
