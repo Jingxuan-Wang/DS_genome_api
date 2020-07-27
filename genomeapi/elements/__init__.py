@@ -8,3 +8,4 @@ from genomeapi.elements.granularity import Granularity
 from genomeapi.elements.location import Location
 from genomeapi.elements.time_series_reference import TimeSeriesReference
 from genomeapi.elements.link import Link
+from genomeapi.elements.bounding_box import BoundingBox

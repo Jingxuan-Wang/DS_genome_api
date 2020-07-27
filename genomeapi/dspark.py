@@ -27,6 +27,7 @@ class Dspark:
                URL = "https://apistore.dsparkanalytics.com.au",
                token=None,
                site: str = "DEFAULT",
+               proxies: dict = {}
                ):
     if token is None:
       ## token not given, trying to fetch with given consumer_key and secret
@@ -40,10 +41,8 @@ class Dspark:
       ## token is given, use the token directly
       _token = token
 
-    _URL = URL
-    self.stay_point = StayPoint(_URL, _token)
-    self.link_meta = LinkMeta(_URL, _token)
-    self.discrete_visit = DiscreteVisit(_URL, _token)
-    self.od_matrix = ODMatrix(_URL, _token)
-    self.od_through_link = ODThroughLink(_URL, _token)
-    self.URL = URL
+    self.stay_point = StayPoint(URL, _token, proxies=proxies)
+    self.link_meta = LinkMeta(URL, _token, proxies=proxies)
+    self.discrete_visit = DiscreteVisit(URL, _token, proxies=proxies)
+    self.od_matrix = ODMatrix(URL, _token, proxies=proxies)
+    self.od_through_link = ODThroughLink(URL, _token, proxies=proxies)

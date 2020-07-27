@@ -59,17 +59,26 @@ dspark = Dspark()
 from genomeapi.elements import ExtractionFn
 ## string extraction function example
 string_extraction_fn = ExtractionFn(typ='substring') # not 'string' as type
+string_extraction_fn(index=1, length=4)
 
 ## time format extraction function example
 
-string_extraction_fn = ExtractionFn(typ='timeFormat') # not 'time' as type
+time_format_extraction_fn = ExtractionFn(typ='timeFormat') # not 'time' as type
+time_format_extraction_fn(format='EEEE', timezone='Australia/Sydney')
 ```
 
 ## Basic Query
 ```python
 from genomeapi.dspark import Dspark
 
+## proxies(optional)
+proxies = {'http': 'http://10.10.1.10:3128', 'https': 'http://10.10.1.10:1080',}
+## with proxies
+dspark = Dspark(proxies=proxies)
+
+## without proxies
 dspark = Dspark()
+
 dspark.stay_point.dates(begin_date="2019-06-15")
 dspark.stay_point.location(location_type="locationHierarchyLevel", level_type="sa2", id="117011325")
 dspark.stay_point.granularity(period="PT1H")
@@ -85,10 +94,28 @@ dspark.stay_point.to_df(data)
 dspark.stay_point.json
 ```
 
+## Switch endpoint
+```python
+dspark.stay_point ## endpoint for stay point v2
+dspark.od_matrix ## endpoint for od matrix v3
+dspark.discrete_vist ## endpoint for discrete visit v2
+dspark.od_through_link ## endpoint for od through link v1
+dspark.link_meta ## endpoint for link meta v1
+```
+
 ## Multiple aggregations
 ```python
 dspark.od_matrix.aggregate(metric="unique_agents", typ="hyperUnique", described_as="unique_agents")
 dspark.od_matrix.aggregate(metric="total_stays", typ="doubleSum", described_as="total_stays")
+```
+
+## Stackable Dimension Facets
+```python
+from genomeapi.elements import DimensionFacet, ExtractionFn
+dfacet = DimensionFacet("extraction")
+extraction = ExtractionFn("timeFormat")
+dfacets = ["origin_sa4","origin_sa3", dfacet(dimension="__time",output_name="hour",extraction_fn=extraction(format="HH",timezone="Australia/Brisbane"))]
+dspark.od_matrix.dimension_facets(dfacets)
 ```
 
 ## Filter
@@ -116,17 +143,10 @@ not_filter = ~filter.selector(dimension='agent_gender', value='M')
 dspark.stay_point.filter(not_filter)
 ```
 
-## Extraction Function
+## Clear out previous query
 ```python
-from genomeapi.elements import ExtractionFn
-## string extraction function example
-string_extraction_fn = ExtractionFn(typ='string') 
-
-## time format extraction function example
-
-string_extraction_fn = ExtractionFn(typ='time')
+dspark.stay_point.clear_all()
 ```
-
 
 # Authorize
 Method 1:
@@ -156,6 +176,13 @@ dspark = Dspark(token=token)
 ```
 
 # Development Log
+## 1.0.6
+1. Make LinkMeta API functional
+2. Make dimension facets stackable.
+
+## 1.0.5
+1. Add proxies(optional) for api request
+
 ## 1.0.4
 1. fix the issue that filter doesn't allow multiple layers of logical operations
 

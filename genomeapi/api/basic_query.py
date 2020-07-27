@@ -25,8 +25,10 @@ try:
 except:
   from pandas.io.json import json_normalize
 
+from genomeapi.elements import element
 from genomeapi.elements import Dates, Aggregation, DimensionFacet, LogicFilter, ResponseException, RequestException
 from genomeapi.elements import Granularity, Location, TimeSeriesReference
+from genomeapi.elements.element import Element
 
 class BasicQuery:
   #_URLS = "https://apistore.dsparkanalytics.com.au"
@@ -35,7 +37,8 @@ class BasicQuery:
                    "odmatrix": "v3",
                    "odthroughlink": "v1",
                    "linkmeta": "v1"}
-  def __init__(self, end_point:str, URL:str = "https://apistore.dsparkanalytics.com.au"  ,token:str = ""):
+
+  def __init__(self, end_point:str, URL:str = "https://apistore.dsparkanalytics.com.au"  ,token:str = "", proxies:dict = {}):
     self._query_path = "/".join([URL, end_point, self._API_ENDPOINT[end_point], 'query'])
     self._token = token
     self._dt = None
@@ -46,6 +49,7 @@ class BasicQuery:
     self._loc = None
     self._filt = None
     self._req = {}
+    self._proxies = proxies
 
   def dates(self, begin_date: str, end_date: str = None):
     dt = Dates()
@@ -60,9 +64,17 @@ class BasicQuery:
       self._aggs += agg(metric=metric, typ=typ, described_as=described_as) ## adding other Aggregations Object to self.aggs
     return self
 
+  def checkdimfacettyp(self, value):
+    if isinstance(value, str):
+      dfacet = DimensionFacet(typ="string")
+      return dfacet(dimension=value)
+    else:
+      return value
+
   def dimension_facets(self, dimension=None, output_name=None, value=None, extraction_fn=None, typ="string"):
-    d_facets = DimensionFacet(typ=typ)
-    self._d_facets = d_facets(dimension=dimension, output_name=output_name, value=value, extraction_fn=extraction_fn)
+    dfacet = DimensionFacet(typ=typ)
+    dfacet(dimension=dimension, value=value, output_name=output_name, extraction_fn=extraction_fn)
+    self._d_facets = dfacet.to_dict()
     return self
 
   def granularity(self, period, typ="period"):
@@ -109,12 +121,22 @@ class BasicQuery:
   def request(self):
     if len(self._req) == 0:
       self.dumps()
-    response = requests.post(self._query_path,
-                            data=self.json,
-                            headers={
-                             'Authorization': 'Bearer ' + self._token,
-                              'Content-Type': 'application/json'
-                            })
+
+    if len(self._proxies) > 0:
+      response = requests.post(self._query_path,
+                              data=self.json,
+                              headers={
+                               'Authorization': 'Bearer ' + self._token,
+                                'Content-Type': 'application/json'
+                              },
+                               proxies=self._proxies)
+    else:
+      response = requests.post(self._query_path,
+                               data=self.json,
+                               headers={
+                                 'Authorization': 'Bearer ' + self._token,
+                                 'Content-Type': 'application/json'
+                               })
 
     if response.status_code != codes['ok']:
       raise ResponseException(response)

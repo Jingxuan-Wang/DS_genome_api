@@ -21,7 +21,7 @@ from setuptools import setup, find_packages
 
 setup(
   name='genomeapi',
-  version='1.0.4',
+  version='1.0.6',
   packages=find_packages(),
   install_requires=['pandas>=1.0.1',
                     'requests>=2.23.0',
