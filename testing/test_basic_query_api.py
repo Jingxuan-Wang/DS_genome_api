@@ -4,6 +4,7 @@ import unittest
 from genomeapi.api.basic_query import BasicQuery
 from genomeapi.elements.filter import Filter
 from genomeapi.elements.extraction_fn import ExtractionFn
+from genomeapi.elements.dimension_facet import DimensionFacet
 
 class TestBasicQuery(unittest.TestCase):
   def test_query1(self):
@@ -120,7 +121,7 @@ class TestBasicQuery(unittest.TestCase):
     self.assertEqual(query._req, expected)
 
   def test_query4(self):
-    extraction = ExtractionFn(typ='time')
+    extraction = ExtractionFn(typ='timeFormat')
     extract = extraction(format='EEEE', timezone='Australia/Sydney')
     filter = Filter()
     filter = filter.selector(dimension='__time', extraction_fn=extract, value="Monday") \
@@ -227,6 +228,30 @@ class TestBasicQuery(unittest.TestCase):
       }
 
     self.assertEqual(query._req, expected)
+
+  def test_query5(self):
+    dfacet = DimensionFacet("extraction")
+    query = BasicQuery('linkmeta')
+    extraction = ExtractionFn("timeFormat")
+    dfacets = ["origin_sa4","origin_sa3", dfacet(dimension="__time",output_name="hour",extraction_fn=extraction(format="HH",timezone="Australia/Brisbane"))]
+    query.dates(begin_date="2019-07-07", end_date="2019-08-03")
+    query.aggregate(metric="unique_agents", typ="hyperUnique", described_as="unique_agents")
+    query.granularity(period="P7D")
+    query.dimension_facets(dfacets)
+    query.dumps()
+    expected = {
+      "dates": {"beginDate": "2019-07-07", "endDate": "2019-08-03", "type": "range"},
+      "aggregations": [{"metric": "unique_agents", "type": "hyperUnique", "describedAs": "unique_agents"}],
+      "queryGranularity": {"period": "P7D", "type": "period"},
+      "dimensionFacets": ["origin_sa4", "origin_sa3",
+                          {"dimension": "__time", "type": "extraction", "outputName": "hour",
+                           "extractionFn": {"format": "HH", "timeZone": "Australia/Brisbane", "locale": "en","type": "timeFormat"}
+                           }
+                          ]
+    }
+
+    self.assertEqual(query._req, expected)
+
 
 if __name__ == '__main__':
     unittest.main()

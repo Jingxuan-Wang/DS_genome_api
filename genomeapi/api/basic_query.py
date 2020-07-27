@@ -70,21 +70,10 @@ class BasicQuery:
     else:
       return value
 
-  def dimension_facets(self, *values, dimension=None, output_name=None, value=None, extraction_fn=None, typ="string"):
-    thiselem = Element()
-    values = list(values)
-    if len(values) > 0:
-      self._d_facets = thiselem.form_obj(dimensionFacets=list(map(lambda x: self.checkdimfacettyp(x), values)))
-      #self._d_facets = thiselem.form_obj(dimensionFacets=["test1"])
-    elif isinstance(values, str):
-      d_facets = DimensionFacet(typ=typ)
-      this_d_facet = d_facets(dimension=values, output_name=output_name, value=value, extraction_fn=extraction_fn)
-      #self._d_facets = thiselem.form_obj(dimensionFacets=this_d_facet)
-      self._d_facets = thiselem.form_obj(dimensionFacets=["test"])
-    else:
-      d_facets = DimensionFacet(typ=typ)
-      self._d_facets = thiselem.form_obj(dimensionFacets=list(d_facets(dimension=dimension, output_name=output_name, value=value, extraction_fn=extraction_fn)))
-      #self._d_facets = thiselem.form_obj(dimensionFacets=["test2"])
+  def dimension_facets(self, dimension=None, output_name=None, value=None, extraction_fn=None, typ="string"):
+    dfacet = DimensionFacet(typ=typ)
+    dfacet(dimension=dimension, value=value, output_name=output_name, extraction_fn=extraction_fn)
+    self._d_facets = dfacet.to_dict()
     return self
 
   def granularity(self, period, typ="period"):
