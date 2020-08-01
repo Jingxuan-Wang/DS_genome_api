@@ -26,7 +26,7 @@ except:
   from pandas.io.json import json_normalize
 
 from genomeapi.elements import element
-from genomeapi.elements import Dates, Aggregation, DimensionFacet, LogicFilter, ResponseException, RequestException
+from genomeapi.elements import Dates, Aggregation, DimensionFacet, LogicFilter, ResponseException, RequestException, ExtractionFn
 from genomeapi.elements import Granularity, Location, TimeSeriesReference
 from genomeapi.elements.element import Element
 
@@ -50,6 +50,7 @@ class BasicQuery:
     self._filt = None
     self._req = {}
     self._proxies = proxies
+    self._d_facets_multitimeexfn = None
 
   def dates(self, begin_date: str, end_date: str = None):
     dt = Dates()
@@ -71,7 +72,25 @@ class BasicQuery:
     else:
       return value
 
-  def dimension_facets(self, dimension=None, output_name=None, value=None, extraction_fn=None, typ="string"):
+  def dimension_facets(self, *dimension, output_name=None, value=None, extraction_fn=None, typ="string"):
+    if len(dimension) == 1 and isinstance(dimension[0],list):
+      dimension=dimension[0]
+    else:
+      dimension=list(dimension)
+
+    dictdimensions = list(filter(None, list(map(lambda x: x if isinstance(x, dict) else None, dimension))))
+    timedimensions = list(filter(None, map(lambda x: x if x["type"] == "extraction" and x["dimension"] == "__time" else None, dictdimensions)))
+    if len(timedimensions) > 1:
+      timeformats = "_____".join([d['extractionFn']["format"] for d in timedimensions])
+      exfntimezone = [d['extractionFn']["timeZone"] for d in timedimensions][0]
+      output_name = "_____".join([d['outputName'] for d in timedimensions])
+      tempdfacet = DimensionFacet(typ="extraction")
+      tempextraction = ExtractionFn("timeFormat")
+      tempfacet = tempdfacet(dimension="__time", output_name=output_name, extraction_fn=tempextraction(format=timeformats, timezone=exfntimezone))
+      nontimedimensions = [thisfacet for thisfacet in dimension if (isinstance(thisfacet, dict) and thisfacet['type'] == "extraction" and thisfacet["dimension"] == "__time") == False]
+      dimension = nontimedimensions + [tempfacet]
+      self._d_facets_multitimeexfn = output_name
+
     dfacet = DimensionFacet(typ=typ)
     dfacet(dimension=dimension, value=value, output_name=output_name, extraction_fn=extraction_fn)
     self._d_facets = dfacet.to_dict()
@@ -117,6 +136,11 @@ class BasicQuery:
       self._req.update(self._d_facets)
 
     self.json = json.dumps(self._req)
+
+  def splitmultiexfnresult(self, elem):
+    elem["event"].update(dict(zip(self._d_facets_multitimeexfn.split("_____"), elem["event"][self._d_facets_multitimeexfn].split("_____"))))
+    elem["event"].pop(self._d_facets_multitimeexfn,None)
+    return elem
     
   def request(self):
     if len(self._req) == 0:
@@ -143,7 +167,12 @@ class BasicQuery:
     else:
       if len(response.json()) == 0:
         raise RequestException("API return is empty, please check your query, especially the date you are querying")
-      return response.json()
+      else:
+        if self._d_facets_multitimeexfn is None:
+          return response.json()
+        else:
+          return list(map(self.splitmultiexfnresult, response.json()))
+
 
   def to_df(self, json_data):
     df = json_normalize(json_data)
