@@ -19,6 +19,7 @@
 
 from .element import Element
 from .exceptions import APIException
+from functools import reduce
 
 class LogicFilter(Element):
   _ORDER = ['lexicographic', 'alphanumeric', 'numeric', 'strlen']
@@ -88,7 +89,7 @@ class LogicFilter(Element):
       other_v = [other.v]
     elif self._logic == 'and': ## consecutive and operation
       self_v = self.v
-      other_v = [other.v]
+      other_v = [other.v] if other._logic is None else [other.to_value()]
     else:  ## and operation on top of or/not operation
       self_v = [self.to_value()]
       other_v = [other.to_value()]
@@ -103,7 +104,7 @@ class LogicFilter(Element):
       other_v = [other.v]
     elif self._logic == 'or': ## consecutive or operation
       self_v = self.v
-      other_v = [other.v]
+      other_v = [other.v] if other._logic is None else [other.to_value()]
     else:  ## or operation on top of and/not operation
       self_v = [self.to_value()]
       other_v = [other.to_value()]

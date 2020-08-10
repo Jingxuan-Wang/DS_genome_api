@@ -3,6 +3,7 @@ __author__ = 'jingxuan'
 import unittest
 from genomeapi.elements.filter import Filter
 from genomeapi.elements.extraction_fn import ExtractionFn
+from functools import reduce
 
 class TestFilter(unittest.TestCase):
   def test_selector(self):
@@ -170,8 +171,13 @@ class TestFilter(unittest.TestCase):
 
   def test_mix_operation(self):
     filter = Filter()
-    res = (filter.selector(dimension='a', value='x') & filter.selector(dimension="b", value="x")) | (filter.selector(dimension="1", value="y") & filter.selector(dimension="2", value="y"))
-    print(res.to_dict())
+    listOfSA2 = ['305021115', '303021053', '303021055', '303021058']
+    and_filter_list = list(map(lambda x: (filter.selector(dimension="origin_sa2", value=x)
+                                          & filter.selector(dimension="destination_sa2",
+                                                                   value=x)), listOfSA2))
+    combined_filters = reduce(lambda a, b: a | b, and_filter_list)
+    expected = {'filter': {'fields': [{'fields': [{'dimension': 'origin_sa2', 'value': '305021115', 'type': 'selector'}, {'dimension': 'destination_sa2', 'value': '305021115', 'type': 'selector'}], 'type': 'and'}, {'fields': [{'dimension': 'origin_sa2', 'value': '303021053', 'type': 'selector'}, {'dimension': 'destination_sa2', 'value': '303021053', 'type': 'selector'}], 'type': 'and'}, {'fields': [{'dimension': 'origin_sa2', 'value': '303021055', 'type': 'selector'}, {'dimension': 'destination_sa2', 'value': '303021055', 'type': 'selector'}], 'type': 'and'}, {'fields': [{'dimension': 'origin_sa2', 'value': '303021058', 'type': 'selector'}, {'dimension': 'destination_sa2', 'value': '303021058', 'type': 'selector'}], 'type': 'and'}], 'type': 'or'}}
+    self.assertEqual(combined_filters.to_dict(), expected)
 
 if __name__ == '__main__':
     unittest.main()
