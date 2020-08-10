@@ -178,8 +178,11 @@ dspark = Dspark(token=token)
 # Development Log
 ## 1.0.8
 1. Workaround for API limitation of multiple extraction functions on same dimension
+2. Fix a issue that cause or operation not working for a list of and filter and vice versa 
+
 ## 1.0.7
 1. Allow multiple extraction dimensions as both list or multiple unnamed parameters
+
 ## 1.0.6
 1. Make LinkMeta API functional
 2. Make dimension facets stackable.
