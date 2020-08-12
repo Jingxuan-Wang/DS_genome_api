@@ -86,7 +86,7 @@ class LogicFilter(Element):
   def __and__(self, other):
     if self._logic is None: ## first and operation
       self_v = [self.v]
-      other_v = [other.v]
+      other_v = [other.v] if other._logic is None else [other.to_value()]
     elif self._logic == 'and': ## consecutive and operation
       self_v = self.v
       other_v = [other.v] if other._logic is None else [other.to_value()]
@@ -101,7 +101,7 @@ class LogicFilter(Element):
   def __or__(self, other):
     if self._logic is None: ## first or operation
       self_v = [self.v]
-      other_v = [other.v]
+      other_v = [other.v] if other._logic is None else [other.to_value()]
     elif self._logic == 'or': ## consecutive or operation
       self_v = self.v
       other_v = [other.v] if other._logic is None else [other.to_value()]
