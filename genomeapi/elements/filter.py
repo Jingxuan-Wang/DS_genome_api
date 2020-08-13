@@ -115,11 +115,10 @@ class LogicFilter(Element):
     return self
 
   def __invert__(self):
-    if self._logic is None:
-      field = self.v
-      self.v = field
-      self._logic = 'not'
-      return self
+    field = self.v
+    self.v = field
+    self._logic = 'not'
+    return self
 
 class Filter:
   def __init__(self):
