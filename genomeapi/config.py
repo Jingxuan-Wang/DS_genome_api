@@ -51,7 +51,8 @@ class Config:
   def loading(cls):
     config = configparser.ConfigParser()
     module_dir = os.path.dirname(sys.modules[__name__].__file__)
-    locations = [os.path.join(module_dir, "config/genome_api.ini"), "genome_api.ini"]
+    locations = [os.path.join(module_dir, "config/genome_api.ini"), "~/genome_api.ini"]
+    existence = [i for i in locations if os.path.exists(i)]
     config.read(locations)
+    print(config)
     cls.SETTING = config
-
