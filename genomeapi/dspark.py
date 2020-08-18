@@ -25,13 +25,14 @@ class Dspark:
 
   def __init__(self,
                URL = "https://apistore.dsparkanalytics.com.au",
+               config_path: str = "",
                token=None,
                site: str = "DEFAULT",
                proxies: dict = {}
                ):
     if token is None:
       ## token not given, trying to fetch with given consumer_key and secret
-      self.config = Config(site)
+      self.config = Config(site, config_path)
 
       self.auth = Authorize(url=URL+"/token",
                             consumer_key=self.config.consumer_key,

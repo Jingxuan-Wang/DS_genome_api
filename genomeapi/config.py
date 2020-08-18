@@ -26,10 +26,10 @@ class Config:
   SETTING = None
   LOCK = Lock()
 
-  def __init__(self, site: str):
+  def __init__(self, site: str, config_path: str = ""):
     with Config.LOCK:
       if Config.SETTING is None:
-        self.loading()
+        self.loading(config_path)
 
     self.config_value = dict(Config.SETTING.items(site))
 
@@ -48,12 +48,11 @@ class Config:
       raise Exception("please set consumer key and secret by ini file or setting env value")
 
   @classmethod
-  def loading(cls):
+  def loading(cls, config_path):
     config = configparser.ConfigParser()
     module_dir = os.path.dirname(sys.modules[__name__].__file__)
-    homedir = os.path.expanduser("~")
-    locations = [os.path.join(module_dir, "config/genome_api.ini"), homedir+"/genome_api.ini"]
+    homedir = os.path.expanduser("~") if os.name == "posix" else "C:/Documents"
+    locations = [os.path.join(module_dir, "config/genome_api.ini"), homedir+"/genome_api.ini", config_path]
     existence = [i for i in locations if os.path.exists(i)]
     config.read(locations)
-    print(config)
     cls.SETTING = config
