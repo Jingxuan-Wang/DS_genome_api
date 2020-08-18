@@ -179,6 +179,7 @@ dspark = Dspark(token=token)
 ## 1.0.8
 1. Workaround for API limitation of multiple extraction functions on same dimension
 2. Fix a issue that cause or operation not working for a list of and filter and vice versa 
+3. User can give a path of config file which contains the key and secret for authorization
 
 ## 1.0.7
 1. Allow multiple extraction dimensions as both list or multiple unnamed parameters
