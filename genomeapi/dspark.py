@@ -42,8 +42,8 @@ class Dspark:
       ## token is given, use the token directly
       _token = token
 
-    self.stay_point = StayPoint(URL, _token, proxies=proxies)
-    self.link_meta = LinkMeta(URL, _token, proxies=proxies)
-    self.discrete_visit = DiscreteVisit(URL, _token, proxies=proxies)
-    self.od_matrix = ODMatrix(URL, _token, proxies=proxies)
-    self.od_through_link = ODThroughLink(URL, _token, proxies=proxies)
+    self.stay_point = StayPoint(URL=URL, token=_token, proxies=proxies)
+    self.link_meta = LinkMeta(URL=URL, token=_token, proxies=proxies)
+    self.discrete_visit = DiscreteVisit(URL=URL, token=_token, proxies=proxies)
+    self.od_matrix = ODMatrix(URL=URL, token=_token, proxies=proxies)
+    self.od_through_link = ODThroughLink(URL=URL, token=_token, proxies=proxies)
