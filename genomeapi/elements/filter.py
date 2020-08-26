@@ -72,7 +72,7 @@ class LogicFilter(Element):
       return self
 
   def interval(self,*intervals, dimension: str):
-    self.v = self.form_obj(dimension=dimension, intervals=list(intervals), type='interval')
+    self.v = self.form_obj(dimension=dimension, intervals=intervals, type='interval')
     return self
 
   def like(self, dimension, pattern):
