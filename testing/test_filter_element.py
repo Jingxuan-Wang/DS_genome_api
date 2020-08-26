@@ -47,8 +47,8 @@ class TestFilter(unittest.TestCase):
   def test_interval(self):
     filter = Filter()
     res = filter.interval(
-      "2019-08-01T16:00:00.000+10/2019-08-01T18:59:59.999+10",
-      "2019-08-02T18:00:00.000+10/2019-08-02T20:59:59.999+10",
+      ["2019-08-01T16:00:00.000+10/2019-08-01T18:59:59.999+10",
+      "2019-08-02T18:00:00.000+10/2019-08-02T20:59:59.999+10"],
       dimension='__time')
     expected = {
       "filter": {
@@ -60,6 +60,7 @@ class TestFilter(unittest.TestCase):
         ]
       }
     }
+    print(res.to_dict())
     self.assertEqual(res.to_dict(), expected)
 
   def test_like(self):

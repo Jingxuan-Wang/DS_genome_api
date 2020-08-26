@@ -71,7 +71,7 @@ class LogicFilter(Element):
       self.v = self.form_obj(dimension=dimension, lower=int(lower), ordering=ordering, type='bound', **kwargs)
       return self
 
-  def interval(self,*intervals, dimension: str):
+  def interval(self, intervals, dimension: str):
     self.v = self.form_obj(dimension=dimension, intervals=intervals, type='interval')
     return self
 
