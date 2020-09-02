@@ -196,9 +196,9 @@ functions such as functions related to timestamp manipulation
 1. Add proxies(optional) for api request
 
 ## 1.0.4
-1. fix the issue that filter doesn't allow multiple layers of logical operations
+1. Fix the issue that filter doesn't allow multiple layers of logical operations
 
 ## 1.0.3
-1. change response error from RequestException to ResponseException in order to show more detailed error return from API
+1. Change response error from RequestException to ResponseException in order to show more detailed error return from API
 2. Add RequestException message when api return is empty
 
