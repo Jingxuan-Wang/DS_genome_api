@@ -28,14 +28,14 @@ def api_filter_during(start, end, tz, min_duration = 5, starting_within_hr = 24)
     constructing a combination of filters that can be used to detect who is staying in a period of time,
     which is a common task related to StayPoint API
     Args:
-        start:
-        end:
-        tz:
-        min_duration:
-        starting_within:
+        start(str): starting timestamp
+        end(str): ending timestamp
+        tz(str): local timezone
+        min_duration(int):
+        starting_within_hr(int):
 
     Returns:
-
+        filter object
     """
     filter = Filter()
     local_tz = pytz.timezone(tz)
