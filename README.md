@@ -176,13 +176,14 @@ dspark = Dspark(token=token)
 ```
 
 # Development Log
+## 1.0.9
+1. Add a new section 'toolkits' which includes useful advance features regarding to specific user cases and some common 
+functions such as functions related to timestamp manipulation
 
 ## 1.0.8
 1. Workaround for API limitation of multiple extraction functions on same dimension
 2. Fix a issue that cause or operation not working for a list of and filter and vice versa 
 3. User can give a path of config file which contains the key and secret for authorization
-4. Add a new section 'toolkits' which includes useful advance features regarding to specific user cases and some common 
-functions such as functions related to timestamp manipulation
 
 ## 1.0.7
 1. Allow multiple extraction dimensions as both list or multiple unnamed parameters
