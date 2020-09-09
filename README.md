@@ -205,13 +205,14 @@ dspark = Dspark(token=token)
 from genomeapi.dspark import Dspark
 from genomeapi.elements import DimensionFacet, ExtractionFn
 from genomeapi.elements import Filter
-filter = Filter()
-from functools import reduce
-dfacet = DimensionFacet("extraction")
-extraction = ExtractionFn("timeFormat")
-import pandas as pd
+from genomeapi.toolkits.api_filter import *
 from functools import reduce
 
+filter = Filter()
+dfacet = DimensionFacet("extraction")
+extraction = ExtractionFn("timeFormat")
+
+import pandas as pd
 #set showing all column in panda dataframes
 pd.set_option('display.max_rows', None)
 pd.set_option('display.max_columns', 100)
@@ -237,7 +238,7 @@ dspark.stay_point.aggregate(metric="sum_stay_duration", typ="doubleSum",describe
 ## posting request to api and get data
 sp_example = dspark.stay_point.request()
 ## converting data into a pandas DataFrame
-dspark.stay_point.to_df(sp_example)
+df_results= dspark.stay_point.to_df(sp_example)
 ```
 
 ### Query 2: 6 hour interval visits/individual in one sa2(117011325) during 2019-06-15 ~ 2019-06-22 (DisceteVisit)
@@ -252,7 +253,7 @@ dspark.discrete_visit.aggregate(metric="total_records", typ="doubleSum",describe
 ## posting request to api and get data
 dv_example = dspark.discrete_visit.request()
 ## converting data into a pandas DataFrame
-dspark.discrete_visit.to_df(dv_example)
+df_results= dspark.discrete_visit.to_df(dv_example)
 ```
 ### Query 3: Daily trip numbers/sum duration/individuals originating from one sa2(117011325) (OD Matrix)
 ```python
@@ -267,7 +268,7 @@ dspark.od_matrix.aggregate(metric="unique_agents", typ="hyperUnique", described_
 dspark.od_matrix.aggregate(metric="total_records", typ="doubleSum", described_as="trips")
 dspark.od_matrix.aggregate(metric="sum_duration", typ="doubleSum", described_as="duration")  ##unit as seconds
 od_example = dspark.od_matrix.request()
-dspark.od_matrix.to_df(od_example)
+df_results= dspark.od_matrix.to_df(od_example)
 ```
 ### Query 4: Daily trip numbers/individuals originating passing through link NSW513043667 during 2019-06-15 ~ 2019-06-22 (OD Through Link)
 ```python
@@ -279,7 +280,7 @@ dspark.od_through_link.link("NSW513043667")
 dspark.od_through_link.aggregate(metric="unique_agents", typ="hyperUnique", described_as="unique_agents")
 dspark.od_through_link.aggregate(metric="total_records", typ="doubleSum", described_as="trips")
 od_link_example = dspark.od_through_link.request()
-dspark.od_through_link.to_df(od_link_example)
+df_results= dspark.od_through_link.to_df(od_link_example)
 ```
 ## Intermediate query
 ### Query 5: Daily visits/individual/total stay duration/maximum duration among the stays in one sa2(117011325) during 2019-06-15 ~ 2019-06-22, group by home location/gender, also extracting day of week information based on Sydney time zone. (Staypoint)
@@ -301,7 +302,7 @@ dspark.stay_point.aggregate(metric="sum_stay_duration", typ="doubleSum",describe
 ## posting request to api and get data
 sp_example = dspark.stay_point.request()
 ## converting data into a pandas DataFrame
-dspark.stay_point.to_df(sp_example)
+df_results= dspark.stay_point.to_df(sp_example)
 ```
 ### Query 6: daily mornig and afternoon peak trips to QLD (note: extraction function does NOT work for in_filter. To do this, we need to use a combination of or filter and a select filter) (OD Matrix)
 ```python
@@ -328,12 +329,11 @@ dspark.od_matrix.dimension_facets(dfacet(dimension= "__time", extraction_fn=extr
 dspark.od_matrix.filter(or_filter)
 dspark.od_matrix.aggregate(metric="unique_agents", typ="hyperUnique", described_as="unique_agents")
 data=dspark.od_matrix.request()
-df = dspark.od_matrix.to_df(data)
+df_results= dspark.od_matrix.to_df(data)
 ```
 
 ### Query 7: Trips start and end in the same SA2 (an example of combination of selector filter, and filter, or filter) (OD Matrix)
 ```python
-from functools import reduce
 dspark.od_matrix.clear_all()
 ## construct filter
 listOfSA2 =['305021115', '303021053', '303021055', '303021058']
@@ -346,7 +346,7 @@ dspark.od_matrix.time_series_reference("origin")
 dspark.od_matrix.dimension_facets(["origin_sa2", "destination_sa2"])
 dspark.od_matrix.aggregate(metric="unique_agents", typ="hyperUnique", described_as="unique_visitors")
 data = dspark.od_matrix.request()
-df = dspark.od_matrix.to_df(data)
+df_results= dspark.od_matrix.to_df(data)
 ```
 
 ### Query 8: Trips ended in different SA2 (an example of combination of not filter, selectoer filter ,and filter, or filter) (OD Matrix)
@@ -363,7 +363,7 @@ dspark.od_matrix.time_series_reference("origin")
 dspark.od_matrix.dimension_facets(["origin_sa2", "destination_sa2"])
 dspark.od_matrix.aggregate(metric="unique_agents", typ="hyperUnique", described_as="unique_visitors")
 data = dspark.od_matrix.request()
-df = dspark.od_matrix.to_df(data)
+df_results = dspark.od_matrix.to_df(data)
 ```
 ## Advanced Query
 ### Query 9: Visits/individual in one sa4(117) on 2019-06-15 who are NSW/VIC resident, group by home location (Staypoint)
@@ -377,7 +377,7 @@ dspark.stay_point.dimension_facets("agent_home_state","agent_home_state_name")
 dspark.stay_point.aggregate(metric="unique_agents", typ="hyperUnique", described_as= "agent")
 dspark.stay_point.aggregate(metric="total_stays", typ="doubleSum",described_as="visits")
 sp_example_filter = dspark.stay_point.request()
-dspark.stay_point.to_df(sp_example_filter)
+df_results= dspark.stay_point.to_df(sp_example_filter)
 ```
 
 ### Query 10: visits/individual in one sa4(117) on 2019-06-15 during 12:00-12:59, group by home location (Staypoint)
@@ -391,7 +391,7 @@ dspark.stay_point.dimension_facets("agent_home_state","agent_home_state_name")
 dspark.stay_point.aggregate(metric="unique_agents", typ="hyperUnique", described_as= "agent")
 dspark.stay_point.aggregate(metric="total_stays", typ="doubleSum",described_as="visits")
 sp_example_filter = dspark.stay_point.request()
-dspark.stay_point.to_df(sp_example_filter)
+df_results= dspark.stay_point.to_df(sp_example_filter)
 ```
 
 ### Query 11: Visits/individual in one sa4(117) on 2019/06/15 who are NOT NSW residents , group by home location (Staypoint)
@@ -405,7 +405,7 @@ dspark.stay_point.dimension_facets("agent_home_state","agent_home_state_name")
 dspark.stay_point.aggregate(metric="unique_agents", typ="hyperUnique", described_as= "agent")
 dspark.stay_point.aggregate(metric="total_stays", typ="doubleSum",described_as="visits")
 sp_example_filter = dspark.stay_point.request()
-dspark.stay_point.to_df(sp_example_filter)
+df_results= dspark.stay_point.to_df(sp_example_filter)
 ```
 
 ### Query 12: Daily visits/individual in one sa4(117) during 2019/06/15-22, return WEEKEND only , group by home location and day of week information(using OR filter, Sat OR Sun) (StayPoint)
@@ -424,7 +424,7 @@ dspark.stay_point.aggregate(metric="total_stays", typ="doubleSum",described_as="
 ## posting request to api and get data
 sp_example_filter2 = dspark.stay_point.request()
 ## converting data into a pandas DataFrame
-dspark.stay_point.to_df(sp_example_filter2)
+df_results= dspark.stay_point.to_df(sp_example_filter2)
 ```
 
 ### Query 13: Daily visits/individual in one sa4(117) during 2019/06/15-22, return WEEKDAY only , group by home location and day of week information ( Using AND/NOT filter combined, not Sat AND not Sun) (Staypoint)
@@ -444,20 +444,23 @@ dspark.stay_point.aggregate(metric="total_stays", typ="doubleSum",described_as="
 ## posting request to api and get data
 sp_example_filter2 = dspark.stay_point.request()
 ## converting data into a pandas DataFrame
-dspark.stay_point.to_df(sp_example_filter2)
+df_results= dspark.stay_point.to_df(sp_example_filter2)
 ```
 
-### Query 14: number of staypoints between “2020-03-02 07:00:00 “ and “2020-03-02 08:00:00“ (The start time of staypoint can be outside the time range, therefore need to use api_filter_during function) (Staypoint)
+### Query 14: number of staypoints in Brisbane Inner City SA4 for at least 2 hours between 9am-5pm 2020-03-03 (The start time of staypoint can be outside the time range, therefore we need to use api_filter_during function). The start hour is set to maximum 3 hours before 2020-03-03 09am. Granularity is set to 15 minutes in order to show when people arrived who met criteria
 ```python
-dspark = Dspark()
 dspark.stay_point.clear_all()
-dspark.stay_point.dates(begin_date="2020-03-01", end_date= "2020-03-02")
+dspark.stay_point.dates(begin_date="2020-03-02", end_date="2020-03-04")
 dspark.stay_point.location(location_type= "locationHierarchyLevel",level_type= "sa4",id = "305")
 dspark.stay_point.granularity(period= "P31D")
-dspark.stay_point.filter(api_filter_during(start = "2020-03-02 07:00:00", end = "2020-03-02 08:00:00",\
-                                           min_duration = 5, starting_within = 24, tz="Australia/Brisbane"))
-dspark.stay_point.dimension_facets(dfacet(dimension="__time", extraction_fn=extraction(format="yyyy-MM-dd HH:mm:SS", timezone="Australia/Brisbane"),\
-                                         output_name="BrisbaneTime"))
+dspark.stay_point.filter(api_filter_during(start = "2020-03-03 09:00:00",\
+                                           end = "2020-03-03 17:00:00",\
+                                           min_duration = 120,\
+                                           starting_within_hr = 3,\
+                                           tz="Australia/Brisbane"))
+dspark.stay_point.dimension_facets(dfacet(dimension="__time",\
+                                          extraction_fn=extraction(format="yyyy-MM-dd HH", timezone="Australia/Brisbane"),\
+                                         output_name="Brisbane Time"))
 dspark.stay_point.aggregate(metric="unique_agents", typ = "hyperUnique", described_as="unique_agents")
 data=dspark.stay_point.request()
 df_results= dspark.stay_point.to_df(data)
