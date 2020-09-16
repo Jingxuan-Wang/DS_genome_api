@@ -176,6 +176,10 @@ dspark = Dspark(token=token)
 ```
 
 # Development Log
+## 1.0.10
+1. add `period`  function in 'toolkits.api_period' for constructing period string
+2. type in aggregation can be matched automatically based on given metric.
+
 ## 1.0.9
 1. Add a new section 'toolkits' which includes useful advance features regarding to specific user cases and some common 
 functions such as functions related to timestamp manipulation

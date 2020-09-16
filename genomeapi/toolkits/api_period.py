@@ -9,23 +9,22 @@
 #  All rights reserved.
 
 """
-   This is for setup
+   This is for
 
    @author: jingxuan
    @maintainer: jingxuan
    @last editor: jingxuan
-   @last edit time: 3/4/20
+   @last edit time: 16/9/20
 """
-
-from setuptools import setup, find_packages
-
-setup(
-  name='genomeapi',
-  version='1.0.10',
-  packages=find_packages(),
-  install_requires=['pandas>=1.0.1',
-                    'requests>=2.23.0',
-                    'configparser>=4.0.2'],
-  license='Dspark Mobility Genome',
-  long_description=open('README.md').read()
-)
+def period(day=None, hour=None, minute=None):
+    per = "P"
+    if day is not None:
+        per += str(day)+"D"
+    if hour is not None or minute is not None:
+        if hour is not None:
+            per += "T"+str(hour)+"H"
+            if minute is not None:
+                per += str(minute)+"M"
+        else:
+            per += "T"+str(minute)+"M"
+    return per

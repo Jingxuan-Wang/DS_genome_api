@@ -25,10 +25,8 @@ try:
 except:
   from pandas.io.json import json_normalize
 
-from genomeapi.elements import element
-from genomeapi.elements import Dates, Aggregation, DimensionFacet, LogicFilter, ResponseException, RequestException, ExtractionFn
+from genomeapi.elements import Dates, Aggregation, DimensionFacet, LogicFilter, ResponseException, APIException, RequestException, ExtractionFn
 from genomeapi.elements import Granularity, Location, TimeSeriesReference
-from genomeapi.elements.element import Element
 
 class BasicQuery:
   #_URLS = "https://apistore.dsparkanalytics.com.au"
@@ -37,6 +35,7 @@ class BasicQuery:
                    "odmatrix": "v3",
                    "odthroughlink": "v1",
                    "linkmeta": "v1"}
+  _AGG_MAPPER = {'unique_agents': 'hyperUnique', 'total_records': 'longSum'}
 
   def __init__(self, end_point:str, URL:str = "https://apistore.dsparkanalytics.com.au"  ,token:str = "", proxies:dict = {}):
     self._query_path = "/".join([URL, end_point, self._API_ENDPOINT[end_point], 'query'])
@@ -57,8 +56,11 @@ class BasicQuery:
     self._dt = dt(begin_date, end_date=end_date)
     return self
 
-  def aggregate(self, metric: str, typ: str, described_as=None):
+  def aggregate(self, metric: str, described_as=None):
     agg = Aggregation()
+    if metric not in self._AGG_MAPPER.keys():
+      raise APIException("given metric is not supported by this api")
+    typ = self._AGG_MAPPER[metric]
     if self._aggs is None:
       self._aggs = agg(metric=metric, typ=typ, described_as=described_as) ## assign self.aggs as Aggregations Object
     else:

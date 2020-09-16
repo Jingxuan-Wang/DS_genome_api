@@ -21,5 +21,6 @@ from .basic_query import BasicQuery
 
 
 class ODMatrix(BasicQuery):
+  _AGG_MAPPER = {'unique_agents': 'hyperUnique', 'sum_duration':'longSum', 'sum_distance': 'longSum', 'total_records': 'longSum'}
   def __init__(self, URL, token, proxies: dict={}):
     super().__init__(end_point='odmatrix', URL=URL, token=token, proxies=proxies)

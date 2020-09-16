@@ -25,6 +25,7 @@ from genomeapi.elements import Link
 
 
 class ODThroughLink(BasicQuery):
+  _AGG_MAPPER = {'unique_agents': 'hyperUnique', 'sum_duration':'longSum', 'total_records': 'longSum'}
   def __init__(self, URL, token, proxies: dict={}):
     super().__init__(end_point='odthroughlink', URL=URL, token=token, proxies=proxies)
     self._link = None
