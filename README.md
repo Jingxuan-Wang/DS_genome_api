@@ -70,6 +70,7 @@ time_format_extraction_fn(format='EEEE', timezone='Australia/Sydney')
 ## Basic Query
 ```python
 from genomeapi.dspark import Dspark
+from genomeapi.toolkits import *
 
 ## proxies(optional)
 proxies = {'http': 'http://10.10.1.10:3128', 'https': 'http://10.10.1.10:1080',}
@@ -81,7 +82,7 @@ dspark = Dspark()
 
 dspark.stay_point.dates(begin_date="2019-06-15")
 dspark.stay_point.location(location_type="locationHierarchyLevel", level_type="sa2", id="117011325")
-dspark.stay_point.granularity(period="PT1H")
+dspark.stay_point.granularity(period=period(day=1))
 dspark.stay_point.aggregate(metric="unique_agents", typ="hyperUnique")
 
 ## posting request to api and get data
@@ -105,8 +106,8 @@ dspark.link_meta ## endpoint for link meta v1
 
 ## Multiple aggregations
 ```python
-dspark.od_matrix.aggregate(metric="unique_agents", typ="hyperUnique", described_as="unique_agents")
-dspark.od_matrix.aggregate(metric="total_stays", typ="doubleSum", described_as="total_stays")
+dspark.od_matrix.aggregate(metric="unique_agents", described_as="unique_agents")
+dspark.od_matrix.aggregate(metric="total_records", described_as="total_stays")
 ```
 
 ## Stackable Dimension Facets
