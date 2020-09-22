@@ -24,8 +24,8 @@ import json
 
 
 class LinkMeta(BasicQuery):
-  def __init__(self, URL, token, proxies: dict={}):
-    super().__init__(end_point='linkmeta', URL=URL, token=token, proxies=proxies)
+  def __init__(self, URL, token,version = None,proxies: dict={}):
+    super().__init__(end_point='linkmeta', URL=URL, token=token,version = version, proxies=proxies)
     self._bbox = None
 
   def bbox(self, max_coords, min_coords):
