@@ -7,11 +7,12 @@ from genomeapi.elements.exceptions import APIException
 class TestGranularity(unittest.TestCase):
   def test_granularity(self):
     grant = Granularity()
-    res = grant(period='PT1H', typ='period')
+    res = grant(period='PT1H', typ='period', timezone='Australia/Sydney')
     expected = {
       "queryGranularity": {
         "type": "period",
-        "period": "PT1H"
+        "period": "PT1H",
+        "timeZone": "Australia/Sydney"
       }
     }
     self.assertEqual(res, expected)
@@ -19,19 +20,19 @@ class TestGranularity(unittest.TestCase):
   def test_granularity_false_case1(self):
     grant = Granularity()
     with self.assertRaises(APIException) as context:
-      grant(period='PT1H20M', typ='period')
+      grant(period='PT1H20M', typ='period', timezone='Australia/Sydney')
     self.assertTrue("Period must be defined in buckets of 15 minutes", str(context.exception))
 
   def test_granularity_false_case2(self):
     grant = Granularity()
     with self.assertRaises(APIException) as context:
-      grant(period='PT1D', typ='period')
+      grant(period='PT1D', typ='period', timezone='Australia/Sydney')
     self.assertTrue("wrong format for the period", str(context.exception))
 
   def test_granularity_false_case3(self):
     grant = Granularity()
     with self.assertRaises(APIException) as context:
-      grant(period='P1D', typ='other')
+      grant(period='P1D', typ='other', timezone='Australia/Sydney')
     self.assertTrue("wrong type for granularity", str(context.exception))
 
 

@@ -100,9 +100,9 @@ class BasicQuery:
     self._d_facets = dfacet.to_dict()
     return self
 
-  def granularity(self, period, typ="period"):
+  def granularity(self, period, typ="period", timezone="Australia/Sydney"):
     grant = Granularity()
-    self._grant = grant(period, typ)
+    self._grant = grant(period, typ=typ, timezone=timezone)
     return self
 
   def location(self, location_type, level_type, id, country="AU", direction=None):
