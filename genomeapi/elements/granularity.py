@@ -36,7 +36,7 @@ class Granularity(Element):
       if int(mins)%15 != 0:
         raise APIException("Period must be defined in buckets of 15 minutes")
 
-  def __call__(self, period, typ):
+  def __call__(self, period, typ, timezone):
     self.validating(period, typ)
-    value = self.form_obj(period=period, type=typ)
+    value = self.form_obj(period=period, type=typ, timeZone=timezone)
     return self.form_obj(queryGranularity=value)

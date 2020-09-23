@@ -35,7 +35,8 @@ class TestBasicQuery(unittest.TestCase):
       ],
       "queryGranularity": {
         "type": "period",
-        "period": "P31D"
+        "period": "P31D",
+        "timeZone": "Australia/Sydney"
       }
     }
     self.assertEqual(query._req, expected)
@@ -61,7 +62,8 @@ class TestBasicQuery(unittest.TestCase):
     },
     "queryGranularity": {
       "type": "period",
-      "period": "PT15M"
+      "period": "PT15M",
+      "timeZone": "Australia/Sydney"
     },
     "aggregations": [
       {
@@ -102,7 +104,8 @@ class TestBasicQuery(unittest.TestCase):
       ],
       "queryGranularity": {
         "period": "P7D",
-        "type": "period"
+        "type": "period",
+        "timeZone": "Australia/Sydney"
       },
       "filter": {
         "dimension": "link_id",
@@ -211,7 +214,8 @@ class TestBasicQuery(unittest.TestCase):
       ],
       "queryGranularity": {
         "type": "period",
-        "period": "P7D"
+        "period": "P7D",
+        "timeZone": "Australia/Sydney"
       }
       }
 
@@ -230,7 +234,7 @@ class TestBasicQuery(unittest.TestCase):
     expected = {
       "dates": {"beginDate": "2019-07-07", "endDate": "2019-08-03", "type": "range"},
       "aggregations": [{"metric": "unique_agents", "type": "hyperUnique", "describedAs": "unique_agents"}],
-      "queryGranularity": {"period": "P7D", "type": "period"},
+      "queryGranularity": {"period": "P7D", "type": "period", "timeZone": "Australia/Sydney"},
       "dimensionFacets": ["origin_sa4", "origin_sa3",
                           {"dimension": "__time", "type": "extraction", "outputName": "hour",
                            "extractionFn": {"format": "HH", "timeZone": "Australia/Brisbane", "locale": "en","type": "timeFormat"}
