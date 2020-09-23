@@ -38,9 +38,9 @@ class BasicQuery:
                    "linkmeta": "v1"}
   _AGG_MAPPER = {'unique_agents': 'hyperUnique', 'total_records': 'longSum'}
 
-  def __init__(self, end_point:str, URL:str = "https://apistore.dsparkanalytics.com.au", token:str = "", proxies:dict = {}):
-
-    self._query_path = "/".join([URL, end_point, self._API_ENDPOINT[end_point], 'query'])
+  def __init__(self, end_point:str, URL:str = "https://apistore.dsparkanalytics.com.au"  , token:str = "", proxies:dict = {}):
+    self._URL = URL
+    self._end_point = end_point
     self._token = token
     self._dt = None
     self._aggs = None
@@ -58,11 +58,11 @@ class BasicQuery:
     self._dt = dt(begin_date, end_date=end_date)
     return self
 
-  def aggregate(self, metric: str, described_as=None):
+  def aggregate(self, metric: str, typ=None, described_as=None):
     agg = Aggregation()
-    if metric not in self._AGG_MAPPER.keys():
+    if metric not in self._AGG_MAPPER.keys() and typ is None:
       raise APIException("given metric is not supported by this api")
-    typ = self._AGG_MAPPER[metric]
+    typ = self._AGG_MAPPER[metric] if typ is None else typ
     if self._aggs is None:
       self._aggs = agg(metric=metric, typ=typ, described_as=described_as) ## assign self.aggs as Aggregations Object
     else:
@@ -146,7 +146,9 @@ class BasicQuery:
     elem["event"].pop(self._d_facets_multitimeexfn,None)
     return elem
     
-  def request(self):
+  def request(self, version=None):
+    version = "v"+version if version is not None else self._API_ENDPOINT[self._end_point]
+    self._query_path = "/".join([self._URL, self._end_point, version, 'query'])
     if len(self._req) == 0:
       self.dumps()
 
