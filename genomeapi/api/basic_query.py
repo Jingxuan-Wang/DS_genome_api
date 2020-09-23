@@ -37,9 +37,9 @@ class BasicQuery:
                    "linkmeta": "v1"}
   _AGG_MAPPER = {'unique_agents': 'hyperUnique', 'total_records': 'longSum'}
 
-  def __init__(self, end_point:str, URL:str = "https://apistore.dsparkanalytics.com.au"  ,token:str = "", proxies:dict = {},version=None):
-    version = "v"+version if version is not None else self._API_ENDPOINT[end_point]
-    self._query_path = "/".join([URL, end_point, version, 'query'])
+  def __init__(self, end_point:str, URL:str = "https://apistore.dsparkanalytics.com.au"  , token:str = "", proxies:dict = {}):
+    self._URL = URL
+    self._end_point = end_point
     self._token = token
     self._dt = None
     self._aggs = None
@@ -145,7 +145,9 @@ class BasicQuery:
     elem["event"].pop(self._d_facets_multitimeexfn,None)
     return elem
     
-  def request(self):
+  def request(self, version=None):
+    version = "v"+version if version is not None else self._API_ENDPOINT[self._end_point]
+    self._query_path = "/".join([self._URL, self._end_point, version, 'query'])
     if len(self._req) == 0:
       self.dumps()
 
