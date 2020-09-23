@@ -28,7 +28,8 @@ class Dspark:
                config_path: str = "",
                token=None,
                site: str = "DEFAULT",
-               proxies: dict = {}
+               proxies: dict = {},
+               version: str = None
                ):
     if token is None:
       ## token not given, trying to fetch with given consumer_key and secret

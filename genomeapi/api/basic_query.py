@@ -30,6 +30,7 @@ from genomeapi.elements import Granularity, Location, TimeSeriesReference
 
 class BasicQuery:
   #_URLS = "https://apistore.dsparkanalytics.com.au"
+
   _API_ENDPOINT = {"discretevisit": "v2",
                    "staypoint": "v2",
                    "odmatrix": "v3",
