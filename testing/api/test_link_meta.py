@@ -25,7 +25,7 @@ import json
 class TestLinkMeta(unittest.TestCase):
     def test_link_meta_with_filter1(self):
         filter = Filter()
-        link_meta = LinkMeta("token")
+        link_meta = LinkMeta("URL","token")
         link_meta.filter(filter.selector(dimension="link_id", value="NSW513133313"))
         link_meta.dumps()
         expected = {
@@ -39,7 +39,7 @@ class TestLinkMeta(unittest.TestCase):
 
     def test_link_meta_with_filter2(self):
         filter = Filter()
-        link_meta = LinkMeta("token")
+        link_meta = LinkMeta("URL","token")
         link_meta.filter(filter.selector(dimension="link_name", value="Elizabeth Street"))
         link_meta.dumps()
         expected = {
@@ -52,7 +52,7 @@ class TestLinkMeta(unittest.TestCase):
         self.assertEqual(json.loads(link_meta.json), expected)
 
     def test_link_meat_with_bbox(self):
-        link_meta = LinkMeta("token")
+        link_meta = LinkMeta("URL", "token")
         link_meta.bbox(max_coords=[150.835569, -34.238692], min_coords=[150.832936, -34.239866])
         link_meta.dumps()
         expected = {
