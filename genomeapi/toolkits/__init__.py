@@ -9,23 +9,12 @@
 #  All rights reserved.
 
 """
-   This is for setup
+   This is for
 
    @author: jingxuan
    @maintainer: jingxuan
    @last editor: jingxuan
-   @last edit time: 3/4/20
+   @last edit time: 2/9/20
 """
-
-from setuptools import setup, find_packages
-
-setup(
-  name='genomeapi',
-  version='1.0.10',
-  packages=find_packages(),
-  install_requires=['pandas>=1.0.1',
-                    'requests>=2.23.0',
-                    'configparser>=4.0.2'],
-  license='Dspark Mobility Genome',
-  long_description=open('README.md').read()
-)
+from genomeapi.toolkits.api_filter import api_filter_during
+from genomeapi.toolkits.api_period import period

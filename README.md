@@ -70,6 +70,7 @@ time_format_extraction_fn(format='EEEE', timezone='Australia/Sydney')
 ## Basic Query
 ```python
 from genomeapi.dspark import Dspark
+from genomeapi.toolkits import *
 
 ## proxies(optional)
 proxies = {'http': 'http://10.10.1.10:3128', 'https': 'http://10.10.1.10:1080',}
@@ -81,7 +82,7 @@ dspark = Dspark()
 
 dspark.stay_point.dates(begin_date="2019-06-15")
 dspark.stay_point.location(location_type="locationHierarchyLevel", level_type="sa2", id="117011325")
-dspark.stay_point.granularity(period="PT1H")
+dspark.stay_point.granularity(period=period(day=1))
 dspark.stay_point.aggregate(metric="unique_agents", typ="hyperUnique")
 
 ## posting request to api and get data
@@ -105,8 +106,8 @@ dspark.link_meta ## endpoint for link meta v1
 
 ## Multiple aggregations
 ```python
-dspark.od_matrix.aggregate(metric="unique_agents", typ="hyperUnique", described_as="unique_agents")
-dspark.od_matrix.aggregate(metric="total_stays", typ="doubleSum", described_as="total_stays")
+dspark.od_matrix.aggregate(metric="unique_agents", described_as="unique_agents")
+dspark.od_matrix.aggregate(metric="total_records", described_as="total_stays")
 ```
 
 ## Stackable Dimension Facets
@@ -176,6 +177,14 @@ dspark = Dspark(token=token)
 ```
 
 # Development Log
+## 1.0.10
+1. add `period`  function in 'toolkits.api_period' for constructing period string
+2. type in aggregation can be matched automatically based on given metric.
+
+## 1.0.9
+1. Add a new section 'toolkits' which includes useful advance features regarding to specific user cases and some common 
+functions such as functions related to timestamp manipulation
+
 ## 1.0.8
 1. Workaround for API limitation of multiple extraction functions on same dimension
 2. Fix a issue that cause or operation not working for a list of and filter and vice versa 
@@ -192,10 +201,10 @@ dspark = Dspark(token=token)
 1. Add proxies(optional) for api request
 
 ## 1.0.4
-1. fix the issue that filter doesn't allow multiple layers of logical operations
+1. Fix the issue that filter doesn't allow multiple layers of logical operations
 
 ## 1.0.3
-1. change response error from RequestException to ResponseException in order to show more detailed error return from API
+1. Change response error from RequestException to ResponseException in order to show more detailed error return from API
 2. Add RequestException message when api return is empty
 
 # Query Example
