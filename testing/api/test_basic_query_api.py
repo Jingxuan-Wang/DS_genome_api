@@ -11,8 +11,7 @@ class TestBasicQuery(unittest.TestCase):
     query = BasicQuery('linkmeta')
     query.dates(begin_date="2019-07-01", end_date="2019-07-31")
     query.location(location_type="locationHierarchyLevel", level_type="building", id="SYDNEY CENTRAL PLAZA IBC")
-    query.aggregate(metric="unique_agents", typ="hyperUnique", described_as="unique_agents")
-    query.aggregate(metric="total_stays", typ="doubleSum", described_as="total_stays")
+    query.aggregate(metric="unique_agents", described_as="unique_agents")
     query.granularity(period="P31D", typ="period")
     query.dumps()
 
@@ -32,11 +31,6 @@ class TestBasicQuery(unittest.TestCase):
           "metric": "unique_agents",
           "type": "hyperUnique",
           "describedAs": "unique_agents"
-        },
-        {
-          "metric": "total_stays",
-          "type": "doubleSum",
-          "describedAs": "total_stays"
         }
       ],
       "queryGranularity": {
@@ -52,7 +46,7 @@ class TestBasicQuery(unittest.TestCase):
     query.time_series_reference("origin")
     query.location(location_type="locationHierarchyLevel", level_type="sa2", id="117011325")
     query.granularity(period="PT15M", typ="period")
-    query.aggregate(metric="total_records",typ="longSum", described_as="Trips")
+    query.aggregate(metric="total_records", described_as="Trips")
     query.dumps()
     expected ={
     "dates": {
@@ -85,8 +79,8 @@ class TestBasicQuery(unittest.TestCase):
     query.granularity(period="P7D")
     filter = Filter()
     query.filter(filter.in_filter("VIC17483860", "VIC6052402","NSW500187142", dimension="link_id"))
-    query.aggregate(metric="unique_agents", typ="hyperUnique", described_as="unique_agents")
-    query.aggregate(metric="total_records", typ="longSum")
+    query.aggregate(metric="unique_agents", described_as="unique_agents")
+    query.aggregate(metric="total_records")
     query.dumps()
 
     expected = {
@@ -133,8 +127,7 @@ class TestBasicQuery(unittest.TestCase):
     query.dates(begin_date="2019-07-07", end_date="2019-08-03")
     query.location(location_type="locationHierarchyLevel", level_type="sa2", id="117031337")
     query.filter(filt= filter)
-    query.aggregate(metric="unique_agents", typ="hyperUnique", described_as="unique_agents")
-    query.aggregate(metric="total_stays", typ="doubleSum", described_as="total_stays")
+    query.aggregate(metric="unique_agents", described_as="unique_agents")
     query.granularity(period="P7D")
     query.dumps()
 
@@ -214,11 +207,6 @@ class TestBasicQuery(unittest.TestCase):
           "metric": "unique_agents",
           "type": "hyperUnique",
           "describedAs": "unique_agents"
-        },
-        {
-          "metric": "total_stays",
-          "type": "doubleSum",
-          "describedAs": "total_stays"
         }
       ],
       "queryGranularity": {
@@ -235,7 +223,7 @@ class TestBasicQuery(unittest.TestCase):
     extraction = ExtractionFn("timeFormat")
     dfacets = ["origin_sa4","origin_sa3", dfacet(dimension="__time",output_name="hour",extraction_fn=extraction(format="HH",timezone="Australia/Brisbane"))]
     query.dates(begin_date="2019-07-07", end_date="2019-08-03")
-    query.aggregate(metric="unique_agents", typ="hyperUnique", described_as="unique_agents")
+    query.aggregate(metric="unique_agents", described_as="unique_agents")
     query.granularity(period="P7D")
     query.dimension_facets(dfacets)
     query.dumps()
