@@ -180,7 +180,7 @@ dspark = Dspark(token=token)
 ## 1.0.10
 1. add `period`  function in 'toolkits.api_period' for constructing period string
 2. type in aggregation can be matched automatically based on given metric.
-3. add `version` parameter for api entry port, so user can select different version of same API
+3. add `version` parameter in api 'request' function, so user can select different version of same API
 4. add `timezone` parameter for granularity function, default value is 'Australia/Sydney'
 
 ## 1.0.9
