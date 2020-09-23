@@ -227,7 +227,7 @@ class TestBasicQuery(unittest.TestCase):
     extraction = ExtractionFn("timeFormat")
     dfacets = ["origin_sa4","origin_sa3", dfacet(dimension="__time",output_name="hour",extraction_fn=extraction(format="HH",timezone="Australia/Brisbane"))]
     query.dates(begin_date="2019-07-07", end_date="2019-08-03")
-    query.aggregate(metric="unique_agents", described_as="unique_agents")
+    query.aggregate(metric="unique_agents", typ='hyperUnique', described_as="unique_agents")
     query.granularity(period="P7D")
     query.dimension_facets(dfacets)
     query.dumps()
