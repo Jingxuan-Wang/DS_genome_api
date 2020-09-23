@@ -22,6 +22,6 @@ from .basic_query import BasicQuery
 
 class DiscreteVisit(BasicQuery):
   
-  def __init__(self, URL,version = None, token, proxies: dict={}):
+  def __init__(self, URL, token, proxies: dict={}, version: str = None):
     super().__init__(end_point='discretevisit', URL=URL, version = version,token=token, proxies=proxies)
 

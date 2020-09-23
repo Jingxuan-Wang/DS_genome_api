@@ -39,7 +39,7 @@ class BasicQuery:
                    "odthroughlink": "v1",
                    "linkmeta": "v1"}
 
-  def __init__(self, end_point:str, URL:str = "https://apistore.dsparkanalytics.com.au",version=None, token:str = "", proxies:dict = {}):
+  def __init__(self, end_point:str, URL:str = "https://apistore.dsparkanalytics.com.au", token:str = "", proxies:dict = {}, version: str = None):
     if version is not None:
       self._query_path = "/".join([URL, end_point, 'v' + version, 'query'])
     else:

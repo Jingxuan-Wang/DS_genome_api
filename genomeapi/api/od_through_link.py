@@ -25,7 +25,7 @@ from genomeapi.elements import Link
 
 
 class ODThroughLink(BasicQuery):
-  def __init__(self, URL, token,version = None,  proxies: dict={}):
+  def __init__(self, URL, token, proxies: dict={}, version: str = None):
     super().__init__(end_point='odthroughlink', URL=URL, token=token, version = version, proxies=proxies)
     self._link = None
 
