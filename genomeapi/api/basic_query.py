@@ -57,11 +57,11 @@ class BasicQuery:
     self._dt = dt(begin_date, end_date=end_date)
     return self
 
-  def aggregate(self, metric: str, described_as=None):
+  def aggregate(self, metric: str, typ=None, described_as=None):
     agg = Aggregation()
-    if metric not in self._AGG_MAPPER.keys():
+    if metric not in self._AGG_MAPPER.keys() and typ is None:
       raise APIException("given metric is not supported by this api")
-    typ = self._AGG_MAPPER[metric]
+    typ = self._AGG_MAPPER[metric] if typ is None else typ
     if self._aggs is None:
       self._aggs = agg(metric=metric, typ=typ, described_as=described_as) ## assign self.aggs as Aggregations Object
     else:
