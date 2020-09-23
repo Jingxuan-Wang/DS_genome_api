@@ -38,12 +38,9 @@ class BasicQuery:
                    "linkmeta": "v1"}
   _AGG_MAPPER = {'unique_agents': 'hyperUnique', 'total_records': 'longSum'}
 
-  def __init__(self, end_point:str, URL:str = "https://apistore.dsparkanalytics.com.au", token:str = "", proxies:dict = {}, version=None,):
-    if version is not None:
-      self._query_path = "/".join([URL, end_point, 'v' + version, 'query'])
-    else:
-      self._query_path = "/".join([URL, end_point, self._API_ENDPOINT[end_point], 'query'])
+  def __init__(self, end_point:str, URL:str = "https://apistore.dsparkanalytics.com.au", token:str = "", proxies:dict = {}):
 
+    self._query_path = "/".join([URL, end_point, self._API_ENDPOINT[end_point], 'query'])
     self._token = token
     self._dt = None
     self._aggs = None
