@@ -194,5 +194,28 @@ class TestFilter(unittest.TestCase):
     expected = {'filter': {'fields': [{'fields': [{'dimension': 'origin_sa2', 'value': '305021115', 'type': 'selector'}, {'dimension': 'destination_sa2', 'value': '305021115', 'type': 'selector'}], 'type': 'and'}, {'fields': [{'dimension': 'origin_sa2', 'value': '303021053', 'type': 'selector'}, {'dimension': 'destination_sa2', 'value': '303021053', 'type': 'selector'}], 'type': 'and'}, {'fields': [{'dimension': 'origin_sa2', 'value': '303021055', 'type': 'selector'}, {'dimension': 'destination_sa2', 'value': '303021055', 'type': 'selector'}], 'type': 'and'}, {'fields': [{'dimension': 'origin_sa2', 'value': '303021058', 'type': 'selector'}, {'dimension': 'destination_sa2', 'value': '303021058', 'type': 'selector'}], 'type': 'and'}], 'type': 'or'}}
     self.assertEqual(combined_filters.to_dict(), expected)
 
+
+  def test_filter_auto_renew(self):
+    filter = Filter()
+    res = filter.in_filter("A", "B", "C", dimension='links')
+    res.to_dict()
+    res2 = filter.in_filter("D","E", dimension='links')
+    expected2 = {
+      'filter': {
+        'type': 'in',
+        'dimension': 'links',
+        'values': ['D', 'E']
+      }
+    }
+    self.assertEqual(res2.to_dict(), expected2)
+
+  def test_filter_auto_renew2(self):
+    filter = Filter()
+    res = ~filter.selector(dimension='country_name', value='AUSTRALIA')
+    res.to_dict()
+    res2 = filter.in_filter("D", "E", dimension='links')
+    expected_logic = None
+    self.assertEqual(res2._logic, expected_logic)
+
 if __name__ == '__main__':
     unittest.main()
