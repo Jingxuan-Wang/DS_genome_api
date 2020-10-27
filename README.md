@@ -204,6 +204,9 @@ dspark = Dspark(token=token)
 ```
 
 # Development Log
+## 1.0.11
+1. make filter obj be able to reused after calling to_dict function
+
 ## 1.0.10
 1. add `period`  function in 'toolkits.api_period' for constructing period string
 2. type in aggregation can be matched automatically based on given metric.
