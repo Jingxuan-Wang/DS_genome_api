@@ -203,42 +203,6 @@ from genomeapi.dspark import Dspark
 dspark = Dspark(token=token)
 ```
 
-# Development Log
-## 1.0.11
-1. make filter obj be able to reused after calling to_dict function
-
-## 1.0.10
-1. add `period`  function in 'toolkits.api_period' for constructing period string
-2. type in aggregation can be matched automatically based on given metric.
-3. add `version` parameter in api 'request' function, so user can select different version of same API
-4. add `timezone` parameter for granularity function, default value is 'Australia/Sydney'
-
-## 1.0.9
-1. Add a new section 'toolkits' which includes useful advance features regarding to specific user cases and some common 
-functions such as functions related to timestamp manipulation
-
-## 1.0.8
-1. Workaround for API limitation of multiple extraction functions on same dimension
-2. Fix a issue that cause or operation not working for a list of and filter and vice versa 
-3. User can give a path of config file which contains the key and secret for authorization
-
-## 1.0.7
-1. Allow multiple extraction dimensions as both list or multiple unnamed parameters
-
-## 1.0.6
-1. Make LinkMeta API functional
-2. Make dimension facets stackable.
-
-## 1.0.5
-1. Add proxies(optional) for api request
-
-## 1.0.4
-1. Fix the issue that filter doesn't allow multiple layers of logical operations
-
-## 1.0.3
-1. Change response error from RequestException to ResponseException in order to show more detailed error return from API
-2. Add RequestException message when api return is empty
-
 # Query Example
 ## prerequisite code
 ```python
@@ -515,3 +479,40 @@ dspark.stay_point.aggregate(metric="unique_agents", described_as="unique_agents"
 data=dspark.stay_point.request()
 df_results= dspark.stay_point.to_df(data)
 ```
+
+# Development Log
+## 1.0.11
+1. make filter obj be able to reused after calling to_dict function
+
+## 1.0.10
+1. add `period`  function in 'toolkits.api_period' for constructing period string
+2. type in aggregation can be matched automatically based on given metric.
+3. add `version` parameter in api 'request' function, so user can select different version of same API
+4. add `timezone` parameter for granularity function, default value is 'Australia/Sydney'
+
+## 1.0.9
+1. Add a new section 'toolkits' which includes useful advance features regarding to specific user cases and some common 
+functions such as functions related to timestamp manipulation
+
+## 1.0.8
+1. Workaround for API limitation of multiple extraction functions on same dimension
+2. Fix a issue that cause or operation not working for a list of and filter and vice versa 
+3. User can give a path of config file which contains the key and secret for authorization
+
+## 1.0.7
+1. Allow multiple extraction dimensions as both list or multiple unnamed parameters
+
+## 1.0.6
+1. Make LinkMeta API functional
+2. Make dimension facets stackable.
+
+## 1.0.5
+1. Add proxies(optional) for api request
+
+## 1.0.4
+1. Fix the issue that filter doesn't allow multiple layers of logical operations
+
+## 1.0.3
+1. Change response error from RequestException to ResponseException in order to show more detailed error return from API
+2. Add RequestException message when api return is empty
+
