@@ -124,7 +124,7 @@ class LogicFilter(Element):
 
 class Filter:
   def __init__(self):
-    pass
+      pass
 
   def selector(self, dimension: str, value:str, extraction_fn=None):
     filter = LogicFilter()
@@ -155,3 +155,8 @@ class Filter:
     filter = LogicFilter()
     filter.reg(dimension=dimension, pattern=pattern)
     return filter
+
+  def to_dict(self):
+    v = self.to_dict()
+    self.__init__()
+    return v
