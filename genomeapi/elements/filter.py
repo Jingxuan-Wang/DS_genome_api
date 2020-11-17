@@ -22,7 +22,6 @@ from .exceptions import APIException
 from functools import reduce
 
 class LogicFilter(Element):
-  _ORDER = ['lexicographic', 'alphanumeric', 'numeric', 'strlen']
   _logic = None
 
   def to_dict(self):
@@ -85,6 +84,11 @@ class LogicFilter(Element):
     self.v = self.form_obj(dimension=dimension, pattern=pattern, type="regex")
     return self
 
+  def logic(self, fields, typ):
+    self.v = fields
+    self._logic = typ
+    return self
+
   def __and__(self, other):
     if self._logic is None: ## first and operation
       self_v = [self.v]
@@ -96,9 +100,9 @@ class LogicFilter(Element):
       self_v = [self.to_value()]
       other_v = [other.to_value()]
     fields = self_v + other_v
-    self.v = fields
-    self._logic = 'and'
-    return self
+    f = LogicFilter()
+    f.logic(fields = fields, typ='and')
+    return f
 
   def __or__(self, other):
     if self._logic is None: ## first or operation
@@ -112,15 +116,15 @@ class LogicFilter(Element):
       other_v = [other.to_value()]
 
     fields = self_v + other_v
-    self.v = fields
-    self._logic = 'or'
-    return self
+    f = LogicFilter()
+    f.logic(fields = fields, typ='or')
+    return f
 
   def __invert__(self):
     field = self.v
-    self.v = field
-    self._logic = 'not'
-    return self
+    f = LogicFilter()
+    f.logic(fields = field, typ='not')
+    return f
 
 class Filter:
   def __init__(self):
@@ -155,8 +159,3 @@ class Filter:
     filter = LogicFilter()
     filter.reg(dimension=dimension, pattern=pattern)
     return filter
-
-  def to_dict(self):
-    v = self.to_dict()
-    self.__init__()
-    return v

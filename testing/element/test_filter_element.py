@@ -217,5 +217,34 @@ class TestFilter(unittest.TestCase):
     expected_logic = None
     self.assertEqual(res2._logic, expected_logic)
 
+  def test_filter_auto_renew3(self):
+    filter = Filter()
+    filter1 = filter.selector(dimension="country_name", value='AUSTRALIA')
+    filter2 = filter.selector(dimension="country_name", value='SINGAPORE')
+    res1 = (filter1 & filter2).to_dict()
+    res2 = (filter1 | filter2).to_dict()
+    expected1 = {'filter':
+                   {'type': 'and', 'fields': [{
+                      "type": "selector",
+                      "dimension": "country_name",
+                      "value": "AUSTRALIA"},{
+                      "type": "selector",
+                      "dimension": "country_name",
+                      "value": "SINGAPORE"
+                   }
+                ]}}
+    expected2 = {'filter':
+                   {'type': 'or', 'fields': [{
+                     "type": "selector",
+                     "dimension": "country_name",
+                     "value": "AUSTRALIA"},{
+                     "type": "selector",
+                     "dimension": "country_name",
+                     "value": "SINGAPORE"
+                   }
+                   ]}}
+    self.assertEqual(res1, expected1)
+    self.assertEqual(res2, expected2)
+
 if __name__ == '__main__':
     unittest.main()
