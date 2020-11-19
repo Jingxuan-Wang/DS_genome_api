@@ -43,6 +43,52 @@ pip install *.whl
 
 ## Latest Change
 
+### Mapping of values
+#### A dict can be used to map between values in the underlying data and a desired dimension or filter value
+```python
+from genomeapi.dspark import Dspark
+from genomeapi.elements import Filter, ValueMap
+
+dspark = Dspark()
+f = Filter()
+dspark.od_matrix.dates(begin_date="2020-09-29")
+dspark.od_matrix.filter(f.selector("origin_state","3"))
+dspark.od_matrix.granularity(period="P1D")
+dspark.od_matrix.time_series_reference("origin")
+vmap = ValueMap("group")
+transportmap = vmap(dimension="dominant_mode",
+                           output_name="main_mode",
+                           show_nulls=True,
+                           map={
+                               'Public Transport': ['BUS','RAIL','SUBWAY','TRAM','FERRY'],
+                               'Car': ['CAR'],
+                               'Walk': ['WALK']
+                           })
+rmap = ValueMap("range")
+agegrpmap = rmap(dimension="agent_year_of_birth",
+                 output_name="age_group",
+                 show_nulls=True,
+                 map={
+                   "20-24": [2020-24,2020-20],
+                   "25-29": [2020-29,2020-25],
+                   "30-34": [2020-34,2020-30],
+                   "35-39": [2020-39,2020-35],
+                   "40-44": [2020-44,2020-40],
+                   "45-49": [2020-49,2020-45],
+                   "50-54": [2020-54,2020-50],
+                   "55-59": [2020-59,2020-55],
+                   "60-64": [2020-64,2020-60],
+                   "65-69": [2020-69,2020-65],
+                   "70+": [2020-999,2020-70]
+                 })
+
+dspark.od_matrix.maps(transportmap, agegrpmap)
+dspark.od_matrix.aggregate(metric="unique_agents",typ="hyperUnique",described_as="unique_people")
+dspark.od_matrix.aggregate(metric="total_records",typ="longSum",described_as="total_trips")
+dspark.od_matrix.dimension_facets("main_mode","age_group")
+qldtripsbymainmode = dspark.od_matrix.request(version="4")
+```
+
 ### URL parameter
 ```python
 from genomeapi.dspark import Dspark

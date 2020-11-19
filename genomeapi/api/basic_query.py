@@ -25,7 +25,8 @@ try:
 except:
   from pandas.io.json import json_normalize
 
-from genomeapi.elements import Dates, Aggregation, DimensionFacet, LogicFilter, ResponseException, APIException, RequestException, ExtractionFn
+from genomeapi.elements import Dates, Aggregation, DimensionFacet, LogicFilter, ResponseException, APIException
+from genomeapi.elements import RequestException, ExtractionFn, ValueMap
 from genomeapi.elements import Granularity, Location, TimeSeriesReference
 
 class BasicQuery:
@@ -38,7 +39,7 @@ class BasicQuery:
                    "linkmeta": "v1"}
   _AGG_MAPPER = {'unique_agents': 'hyperUnique', 'total_records': 'longSum'}
 
-  def __init__(self, end_point:str, URL:str = "https://apistore.dsparkanalytics.com.au"  , token:str = "", proxies:dict = {}):
+  def __init__(self, end_point:str, URL:str = "https://apistore.dsparkanalytics.com.au", token:str = "", proxies:dict = {}):
     self._URL = URL
     self._end_point = end_point
     self._token = token
@@ -52,6 +53,7 @@ class BasicQuery:
     self._req = {}
     self._proxies = proxies
     self._d_facets_multitimeexfn = None
+    self._maps = None
 
   def dates(self, begin_date: str, end_date: str = None):
     dt = Dates()
@@ -100,6 +102,17 @@ class BasicQuery:
     self._d_facets = dfacet.to_dict()
     return self
 
+  def maps(self, *maps):
+
+    if isinstance(maps, ValueMap):
+      self._maps = {"maps": list(maps.to_dict())}
+    elif isinstance(maps, dict):
+      self._maps = {"maps": list(maps)}
+    else:
+      self._maps = {"maps": list(maps)}
+
+    return self
+
   def granularity(self, period, typ="period", timezone="Australia/Sydney"):
     grant = Granularity()
     self._grant = grant(period, typ=typ, timezone=timezone)
@@ -138,6 +151,9 @@ class BasicQuery:
 
     if self._d_facets is not None:
       self._req.update(self._d_facets)
+
+    if self._maps is not None:
+      self._req.update(self._maps)
 
     self.json = json.dumps(self._req)
 
