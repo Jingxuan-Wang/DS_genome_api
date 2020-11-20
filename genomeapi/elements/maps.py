@@ -22,7 +22,7 @@ from .exceptions import APIException
 
 class SimpleMap(Element):
     _value = None
-    def __call__(self, dimension: str = None, output_name: str = None, map:dict = None, show_nulls=False):
+    def __call__(self, dimension: str = None, output_name: str = None, map:dict = None, show_nulls=False, extraction_fn=None):
         if dimension is None:
             raise APIException("")
         elif output_name is None:
@@ -30,7 +30,12 @@ class SimpleMap(Element):
         elif map is None:
             raise APIException("A map for the values must be provided")
         else:
-            self._value = self.form_obj(type="simple", dimension=dimension, output_name=output_name, show_nulls=show_nulls, map=map)
+            if extraction_fn is None:
+                self._value = self.form_obj(type="simple", dimension=dimension, output_name=output_name,
+                                            show_nulls=show_nulls, map=map)
+            else:
+                self._value = self.form_obj(type="simple", dimension=dimension, output_name=output_name,
+                                            show_nulls=show_nulls, map=map, extractionFn=extraction_fn)
 
         return self._value
 
@@ -39,7 +44,7 @@ class SimpleMap(Element):
 
 class GroupMap(Element):
     _value = None
-    def __call__(self, dimension: str = None, output_name: str = None, map:dict = None, show_nulls=False):
+    def __call__(self, dimension: str = None, output_name: str = None, map:dict = None, show_nulls=False, extraction_fn=None):
         if dimension is None:
             raise APIException("")
         elif output_name is None:
@@ -47,7 +52,12 @@ class GroupMap(Element):
         elif map is None:
             raise APIException("A map for the values must be provided")
         else:
-            self._value = self.form_obj(type="group", dimension=dimension, output_name=output_name, show_nulls=show_nulls, map=map)
+            if extraction_fn is None:
+                self._value = self.form_obj(type="group", dimension=dimension, output_name=output_name,
+                                            show_nulls=show_nulls, map=map)
+            else:
+                self._value = self.form_obj(type="group", dimension=dimension, output_name=output_name,
+                                            show_nulls=show_nulls, map=map, extractionFn=extraction_fn)
 
         return self._value
 
@@ -56,7 +66,7 @@ class GroupMap(Element):
 
 class RangeMap(Element):
     _value = None
-    def __call__(self, dimension: str = None, output_name: str = None, map:dict = None, show_nulls=False):
+    def __call__(self, dimension: str = None, output_name: str = None, map:dict = None, show_nulls=False, extraction_fn=None):
         if dimension is None:
             raise APIException("")
         elif output_name is None:
@@ -64,7 +74,12 @@ class RangeMap(Element):
         elif map is None:
             raise APIException("A map for the values must be provided")
         else:
-            self._value = self.form_obj(type="range", dimension=dimension, output_name=output_name, show_nulls=show_nulls, map=map)
+            if extraction_fn is None:
+                self._value = self.form_obj(type="range", dimension=dimension, output_name=output_name,
+                                            show_nulls=show_nulls, map=map)
+            else:
+                self._value = self.form_obj(type="range", dimension=dimension, output_name=output_name,
+                                            show_nulls=show_nulls, map=map, extractionFn=extraction_fn)
 
         return self._value
 
