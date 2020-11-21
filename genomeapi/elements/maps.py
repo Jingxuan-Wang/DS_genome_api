@@ -16,13 +16,29 @@
    @last editor: richard
    @last edit time: 2020-11-18
 """
+##TODO - in json, what is the format for boolean.
 
 from .element import Element
 from .exceptions import APIException
 
-class SimpleMap(Element):
+class BasicMap(Element):
     _value = None
-    def __call__(self, dimension: str = None, output_name: str = None, map:dict = None, show_nulls=False, extraction_fn=None):
+    def __init__(self):
+        pass
+
+    def __add__(self, other):
+        self._value = self._value + other._value
+        return self
+
+    def map(self, **kwargs):
+        self._map = self.form_obj(**kwargs)
+        return self
+
+    def to_dict(self):
+        return self.form_obj(maps=self._value)
+
+class SimpleMap(BasicMap):
+    def __call__(self, dimension: str = None, output_name: str = None, show_nulls=False, extraction_fn=None):
         if dimension is None:
             raise APIException("")
         elif output_name is None:
@@ -31,20 +47,17 @@ class SimpleMap(Element):
             raise APIException("A map for the values must be provided")
         else:
             if extraction_fn is None:
-                self._value = self.form_obj(type="simple", dimension=dimension, output_name=output_name,
-                                            show_nulls=show_nulls, map=map)
+                self._value = [self.form_obj(type="simple", dimension=dimension, output_name=output_name,
+                                            show_nulls=show_nulls, map=self._map)]
             else:
-                self._value = self.form_obj(type="simple", dimension=dimension, output_name=output_name,
-                                            show_nulls=show_nulls, map=map, extractionFn=extraction_fn)
+                self._value = [self.form_obj(type="simple", dimension=dimension, output_name=output_name,
+                                            show_nulls=show_nulls, map=self._map, extractionFn=extraction_fn)]
 
-        return self._value
+        return self
 
-    def to_dict(self):
-        return self.form_obj(maps=self._value)
 
-class GroupMap(Element):
-    _value = None
-    def __call__(self, dimension: str = None, output_name: str = None, map:dict = None, show_nulls=False, extraction_fn=None):
+class GroupMap(BasicMap):
+    def __call__(self, dimension: str = None, output_name: str = None, show_nulls=False, extraction_fn=None):
         if dimension is None:
             raise APIException("")
         elif output_name is None:
@@ -53,20 +66,15 @@ class GroupMap(Element):
             raise APIException("A map for the values must be provided")
         else:
             if extraction_fn is None:
-                self._value = self.form_obj(type="group", dimension=dimension, output_name=output_name,
-                                            show_nulls=show_nulls, map=map)
+                self._value = [self.form_obj(type="group", dimension=dimension, output_name=output_name,
+                                            show_nulls=show_nulls, map=self._map)]
             else:
-                self._value = self.form_obj(type="group", dimension=dimension, output_name=output_name,
-                                            show_nulls=show_nulls, map=map, extractionFn=extraction_fn)
+                self._value = [self.form_obj(type="group", dimension=dimension, output_name=output_name,
+                                            show_nulls=show_nulls, map=self._map, extractionFn=extraction_fn)]
+        return self
 
-        return self._value
-
-    def to_dict(self):
-        return self.form_obj(maps=self._value)
-
-class RangeMap(Element):
-    _value = None
-    def __call__(self, dimension: str = None, output_name: str = None, map:dict = None, show_nulls=False, extraction_fn=None):
+class RangeMap(BasicMap):
+    def __call__(self, dimension: str = None, output_name: str = None, show_nulls=False, extraction_fn=None):
         if dimension is None:
             raise APIException("")
         elif output_name is None:
@@ -75,16 +83,12 @@ class RangeMap(Element):
             raise APIException("A map for the values must be provided")
         else:
             if extraction_fn is None:
-                self._value = self.form_obj(type="range", dimension=dimension, output_name=output_name,
-                                            show_nulls=show_nulls, map=map)
+                self._value = [self.form_obj(type="range", dimension=dimension, output_name=output_name,
+                                            show_nulls=show_nulls, map=self._map)]
             else:
-                self._value = self.form_obj(type="range", dimension=dimension, output_name=output_name,
-                                            show_nulls=show_nulls, map=map, extractionFn=extraction_fn)
-
-        return self._value
-
-    def to_dict(self):
-        return self.form_obj(maps=self._value)
+                self._value = [self.form_obj(type="range", dimension=dimension, output_name=output_name,
+                                            show_nulls=show_nulls, map=self._map, extractionFn=extraction_fn)]
+        return self
 
 class ValueMap:
     fns = {'simple': SimpleMap, 'group': GroupMap, 'range': RangeMap}

@@ -26,7 +26,7 @@ except:
   from pandas.io.json import json_normalize
 
 from genomeapi.elements import Dates, Aggregation, DimensionFacet, LogicFilter, ResponseException, APIException
-from genomeapi.elements import RequestException, ExtractionFn, ValueMap
+from genomeapi.elements import RequestException, ExtractionFn, BasicMap
 from genomeapi.elements import Granularity, Location, TimeSeriesReference
 
 class BasicQuery:
@@ -103,14 +103,10 @@ class BasicQuery:
     return self
 
   def maps(self, *maps):
-
-    if isinstance(maps, ValueMap):
-      self._maps = {"maps": list(maps.to_dict())}
+    if isinstance(maps, BasicMap):
+      self._maps = maps.to_dict()
     elif isinstance(maps, dict):
-      self._maps = {"maps": list(maps)}
-    else:
-      self._maps = {"maps": list(maps)}
-
+      self._maps = maps
     return self
 
   def granularity(self, period, typ="period", timezone="Australia/Sydney"):
