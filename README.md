@@ -217,6 +217,45 @@ not_filter = ~filter.selector(dimension='agent_gender', value='M')
 dspark.stay_point.filter(not_filter)
 ```
 
+## Maps
+### Simple Maps
+```python
+from genomeapi.elements import ValueMap
+simple_map = ValueMap("simple")
+simple_map.map(BOY="M", GIRL="F")
+maps = simple_map(dimension="agent_gender", output_name="gender")
+dspark.stay_point.maps(maps)
+```
+
+### Group Maps
+```python
+from genomeapi.elements import ValueMap
+group_map = ValueMap("group")
+group_map.map(public_transport=["BUS", "TRAM", "FERRY"])
+maps = group_map(dimension="dominant_mode", output_name="transport")
+dspark.stay_point.maps(maps)
+```
+
+### Range Maps
+```python
+from genomeapi.elements import ValueMap
+range_map = ValueMap("range")
+range_map.map(Morning=["00", "11"], Afternoon=["12","23"], Full_Day=["00", "23"])
+maps = range_map(dimension="__time", output_name="timeperiod", show_nulls=True)
+dspark.stay_point.maps(maps)
+```
+
+### Multiple Maps
+```python
+from genomeapi.elements import ValueMap
+range_map = ValueMap("range")
+range_map.map(Morning=["00", "11"], Afternoon=["12","23"], Full_Day=["00", "23"])
+group_map = ValueMap("group")
+group_map.map(public_transport=["BUS", "TRAM", "FERRY"])
+maps = range_map(dimension="__time", output_name="timeperiod", show_nulls=True) + group_map(dimension="dominant_mode", output_name="transport")
+dspark.stay_point.maps(maps)
+```
+
 ## Clear out previous query
 ```python
 dspark.stay_point.clear_all()
@@ -254,10 +293,10 @@ For query examples, please refer to [sample query](sample_query.md)
 
 # Development Log
 ## 1.0.12
-1. add 'maps' as part of elements in package
+1. add `maps` as part of elements in package
 
 ## 1.0.11
-1. make filter obj be able to reused after calling to_dict function
+1. make `filter` obj be able to reused after calling to_dict function
 
 ## 1.0.10
 1. add `period`  function in 'toolkits.api_period' for constructing period string
