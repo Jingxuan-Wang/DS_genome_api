@@ -102,7 +102,7 @@ class BasicQuery:
     self._d_facets = dfacet.to_dict()
     return self
 
-  def maps(self, *maps):
+  def maps(self, maps):
     if isinstance(maps, BasicMap):
       self._maps = maps.to_dict()
     elif isinstance(maps, dict):
