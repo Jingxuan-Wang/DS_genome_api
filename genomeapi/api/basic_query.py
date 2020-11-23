@@ -26,7 +26,7 @@ except:
   from pandas.io.json import json_normalize
 
 from genomeapi.elements import Dates, Aggregation, DimensionFacet, LogicFilter, ResponseException, APIException
-from genomeapi.elements import RequestException, ExtractionFn, Map
+from genomeapi.elements import RequestException, ExtractionFn, BasicMap, Map
 from genomeapi.elements import Granularity, Location, TimeSeriesReference
 
 class BasicQuery:
@@ -103,19 +103,21 @@ class BasicQuery:
     return self
 
   def maps(self, *maps, dimension: str = None, output_name: str = None, map:dict = None, show_nulls=False, extraction_fn=None, typ="group"):
-    _map = []
+    maps = list(maps)
+    m = BasicMap()
+    m._value = []
     if dimension is not None:
-      map = Map(dimension=dimension, output_name=output_name, map=map, show_nulls=show_nulls,
-                extraction_fn=extraction_fn, typ=typ)
-      maps += map
-    if len(*maps) > 0:
+      new_m = Map()
+      maps.append(new_m(dimension=dimension, output_name=output_name, map=map, show_nulls=show_nulls,
+                extraction_fn=extraction_fn, typ=typ))
+    if len(maps) > 0:
         map_dicts = [m for m in maps if isinstance(m, dict)]
-        map_objs = [m._value for m in maps if isinstance(m, Map)]
+        map_objs = [m._value for m in maps if isinstance(m, BasicMap)]
         if len(map_dicts) > 0:
-          _map += map_dicts
+          m._value += map_dicts
         if len(map_objs) > 0:
-          _map += map_objs
-        self._maps = Map.to_dict(_map)
+          m._value += map_objs
+        self._maps = m.to_dict()
     return self
 
   def granularity(self, period, typ="period", timezone="Australia/Sydney"):
