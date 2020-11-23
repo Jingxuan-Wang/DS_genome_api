@@ -25,7 +25,8 @@ try:
 except:
   from pandas.io.json import json_normalize
 
-from genomeapi.elements import Dates, Aggregation, DimensionFacet, LogicFilter, ResponseException, APIException, RequestException, ExtractionFn
+from genomeapi.elements import Dates, Aggregation, DimensionFacet, LogicFilter, ResponseException, APIException
+from genomeapi.elements import RequestException, ExtractionFn, BasicMap, Map
 from genomeapi.elements import Granularity, Location, TimeSeriesReference
 
 class BasicQuery:
@@ -38,7 +39,7 @@ class BasicQuery:
                    "linkmeta": "v1"}
   _AGG_MAPPER = {'unique_agents': 'hyperUnique', 'total_records': 'longSum'}
 
-  def __init__(self, end_point:str, URL:str = "https://apistore.dsparkanalytics.com.au"  , token:str = "", proxies:dict = {}):
+  def __init__(self, end_point:str, URL:str = "https://apistore.dsparkanalytics.com.au", token:str = "", proxies:dict = {}):
     self._URL = URL
     self._end_point = end_point
     self._token = token
@@ -52,6 +53,7 @@ class BasicQuery:
     self._req = {}
     self._proxies = proxies
     self._d_facets_multitimeexfn = None
+    self._maps = None
 
   def dates(self, begin_date: str, end_date: str = None):
     dt = Dates()
@@ -100,6 +102,24 @@ class BasicQuery:
     self._d_facets = dfacet.to_dict()
     return self
 
+  def maps(self, *maps, dimension: str = None, output_name: str = None, map:dict = None, show_nulls=False, extraction_fn=None, typ="group"):
+    maps = list(maps)
+    m = BasicMap()
+    m._value = []
+    if dimension is not None:
+      new_m = Map()
+      maps.append(new_m(dimension=dimension, output_name=output_name, map=map, show_nulls=show_nulls,
+                extraction_fn=extraction_fn, typ=typ))
+    if len(maps) > 0:
+        map_dicts = [m for m in maps if isinstance(m, dict)]
+        map_objs = [m._value for m in maps if isinstance(m, BasicMap)]
+        if len(map_dicts) > 0:
+          m._value += map_dicts
+        if len(map_objs) > 0:
+          m._value += map_objs
+        self._maps = m.to_dict()
+    return self
+
   def granularity(self, period, typ="period", timezone="Australia/Sydney"):
     grant = Granularity()
     self._grant = grant(period, typ=typ, timezone=timezone)
@@ -138,6 +158,9 @@ class BasicQuery:
 
     if self._d_facets is not None:
       self._req.update(self._d_facets)
+
+    if self._maps is not None:
+      self._req.update(self._maps)
 
     self.json = json.dumps(self._req)
 
