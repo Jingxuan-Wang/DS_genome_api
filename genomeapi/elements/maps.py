@@ -20,77 +20,32 @@
 from .element import Element
 from .exceptions import APIException
 
-class SimpleMap(Element):
+class Map(Element):
     _value = None
-    def __call__(self, dimension: str = None, output_name: str = None, map:dict = None, show_nulls=False, extraction_fn=None):
-        if dimension is None:
-            raise APIException("")
-        elif output_name is None:
-            raise APIException("Please provide a name for this map")
-        elif map is None:
-            raise APIException("A map for the values must be provided")
+    _types = ['group', 'simple', 'range']
+    _map = None
+    def __call__(self, dimension, output_name, map:dict = None, show_nulls=False, extraction_fn=None, typ="group"):
+        if map is None & self._map is None:
+            raise APIException("A map for the values must be provided, or map function need to executed")
+        elif typ not in self._types:
+            raise APIException("% is not allowed"%(typ))
         else:
+            _map = self._map if self._map is not None else map
             if extraction_fn is None:
-                self._value = self.form_obj(type="simple", dimension=dimension, output_name=output_name,
+                self._value = self.form_obj(type=typ, dimension=dimension, output_name=output_name,
                                             show_nulls=show_nulls, map=map)
             else:
-                self._value = self.form_obj(type="simple", dimension=dimension, output_name=output_name,
+                self._value = self.form_obj(type=typ, dimension=dimension, output_name=output_name,
                                             show_nulls=show_nulls, map=map, extractionFn=extraction_fn)
+        return self
 
-        return self._value
+    def map(self, **kwargs):
+        self._map = self.form_obj(**kwargs)
 
-    def to_dict(self):
-        return self.form_obj(maps=self._value)
-
-class GroupMap(Element):
-    _value = None
-    def __call__(self, dimension: str = None, output_name: str = None, map:dict = None, show_nulls=False, extraction_fn=None):
-        if dimension is None:
-            raise APIException("")
-        elif output_name is None:
-            raise APIException("Please provide a name for this map")
-        elif map is None:
-            raise APIException("A map for the values must be provided")
+    @staticmethod
+    def to_dict(self, maps=None):
+        if maps is None:
+            return self.form_obj(maps=self._value)
         else:
-            if extraction_fn is None:
-                self._value = self.form_obj(type="group", dimension=dimension, output_name=output_name,
-                                            show_nulls=show_nulls, map=map)
-            else:
-                self._value = self.form_obj(type="group", dimension=dimension, output_name=output_name,
-                                            show_nulls=show_nulls, map=map, extractionFn=extraction_fn)
+            return self.form_obj(maps=maps)
 
-        return self._value
-
-    def to_dict(self):
-        return self.form_obj(maps=self._value)
-
-class RangeMap(Element):
-    _value = None
-    def __call__(self, dimension: str = None, output_name: str = None, map:dict = None, show_nulls=False, extraction_fn=None):
-        if dimension is None:
-            raise APIException("")
-        elif output_name is None:
-            raise APIException("Please provide a name for this map")
-        elif map is None:
-            raise APIException("A map for the values must be provided")
-        else:
-            if extraction_fn is None:
-                self._value = self.form_obj(type="range", dimension=dimension, output_name=output_name,
-                                            show_nulls=show_nulls, map=map)
-            else:
-                self._value = self.form_obj(type="range", dimension=dimension, output_name=output_name,
-                                            show_nulls=show_nulls, map=map, extractionFn=extraction_fn)
-
-        return self._value
-
-    def to_dict(self):
-        return self.form_obj(maps=self._value)
-
-class ValueMap:
-    fns = {'simple': SimpleMap, 'group': GroupMap, 'range': RangeMap}
-    def __new__(cls, typ='group'):
-        cls.typ = typ
-        if typ in cls.fns.keys():
-            return cls.fns[typ]()
-        else:
-            raise APIException("Map type not recognised")
