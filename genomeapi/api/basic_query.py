@@ -39,7 +39,7 @@ class BasicQuery:
                    "linkmeta": "v1"}
   _AGG_MAPPER = {'unique_agents': 'hyperUnique', 'total_records': 'longSum'}
 
-  def __init__(self, end_point:str, URL:str = "https://apistore.dsparkanalytics.com.au", token:str = "", proxies:dict = {}):
+  def __init__(self, end_point:str, URL:str = "https://apistore.dsparkanalytics.com.au", token:str = "", proxies:dict = {}, country="AU"):
     self._URL = URL
     self._end_point = end_point
     self._token = token
@@ -54,6 +54,10 @@ class BasicQuery:
     self._proxies = proxies
     self._d_facets_multitimeexfn = None
     self._maps = None
+    self._country = country
+
+    if URL == "https://apistore.dsparkanalytics.com.au" and country == "SG":
+      self._URL = "https://apistore.datasparkanalytics.com"
 
   def dates(self, begin_date: str, end_date: str = None):
     dt = Dates()

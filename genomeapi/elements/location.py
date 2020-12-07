@@ -26,7 +26,8 @@ class Location(Element):
     def __init__(self, country="AU"):
         if country == "SG":
             self._LEVEL_TYPES = ['staypoint_subzone', 'staypoint_planningarea',
-                                 'staypoint_planningregion', 'building']
+                                 'staypoint_planningregion', 'building','level1','level2','level3','level4',
+                                 'roi1','roi2','roi3','roi4']
         elif country == "AU":
             self._LEVEL_TYPES = ['building', 'sa2', 'sa3', 'sa4', 'gcc', 'poa', 'state']
 

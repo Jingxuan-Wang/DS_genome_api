@@ -29,7 +29,8 @@ class Dspark:
                token=None,
                site: str = "DEFAULT",
                proxies: dict = {},
-               version: str = None
+               version: str = None,
+               country: str = "AU"
                ):
     if token is None:
       ## token not given, trying to fetch with given consumer_key and secret
@@ -43,8 +44,8 @@ class Dspark:
       ## token is given, use the token directly
       _token = token
 
-    self.stay_point = StayPoint(URL=URL, token=_token, proxies=proxies)
-    self.link_meta = LinkMeta(URL=URL, token=_token, proxies=proxies)
-    self.discrete_visit = DiscreteVisit(URL=URL, token=_token, proxies=proxies)
-    self.od_matrix = ODMatrix(URL=URL, token=_token, proxies=proxies)
-    self.od_through_link = ODThroughLink(URL=URL, token=_token, proxies=proxies)
+    self.stay_point = StayPoint(URL=URL, token=_token, proxies=proxies, country=country)
+    self.link_meta = LinkMeta(URL=URL, token=_token, proxies=proxies, country=country)
+    self.discrete_visit = DiscreteVisit(URL=URL, token=_token, proxies=proxies, country=country)
+    self.od_matrix = ODMatrix(URL=URL, token=_token, proxies=proxies, country=country)
+    self.od_through_link = ODThroughLink(URL=URL, token=_token, proxies=proxies, country=country)
